@@ -18,10 +18,10 @@ var trace2 = {
   type: 'scatter'
 };
 
-var data = [trace1, trace2];
+var data = [trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1, trace1];
 
 var layout = {
-  grid: {rows: 1, columns: 2, pattern: 'independent'},
+  grid: {rows: 98, columns: 1, pattern: 'independent'},
 };
 
 Plotly.newPlot('myDiv', data, layout);
