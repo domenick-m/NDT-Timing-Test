@@ -24,7 +24,9 @@ var layout = {
   grid: {rows: 98, columns: 1, pattern: 'independent'},
 };
 
-Plotly.newPlot('myDiv', data, layout);
+var config = {responsive: true}
+
+Plotly.newPlot('myDiv', data, layout, config);
 
 //     tickvals: [0, 50, 100],
 //     ticktext: ["0", "50", "100"],
