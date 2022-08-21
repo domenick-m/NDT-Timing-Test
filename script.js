@@ -91,7 +91,7 @@ let bottomLayout = {
     range: [0, 100],
     domain: [0.05, 0.915]
   },
-  margin: { l: 100, t: 0 },
+  margin: { l: 0, t: 0 },
   
 };
 
@@ -118,7 +118,7 @@ Plotly.react(
     yaxis: {
       zeroline: true
     },
-    margin: { l: 100, t: 25, b: 0 }
+    margin: { l: 0, t: 25, b: 0 }
   }
 );
 
