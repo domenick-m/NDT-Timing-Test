@@ -27,7 +27,7 @@ Plotly.react(
 );
 
 //plot x-axis
-Plotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false });
+Plotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false , responsive: true});
 
 //catch some top plot relayout events and redraw xaxis as an example
 document.getElementById("plot").on("plotly_relayout", function (data) {
@@ -36,5 +36,5 @@ document.getElementById("plot").on("plotly_relayout", function (data) {
   } else if (data["xaxis.autorange"]) {
     bottomLayout.xaxis.range = [0, 100];
   }
-  Plotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false });
+  Plotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false , responsive: true});
 });
