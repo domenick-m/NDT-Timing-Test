@@ -117,7 +117,7 @@ layout = go.Layout(
 fig.update_layout(layout)
 
 fig.update_xaxes(
-    ticktext=[f'{(i/100)}s' for i in range(0, x_range, 100)],
+    ticktext=[f'{int(i/100)}s' for i in range(0, x_range, 100)],
     tickvals=[i for i in range(0, x_range, 100)],
 )
 
