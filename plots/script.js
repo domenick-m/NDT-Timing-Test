@@ -202,12 +202,12 @@ let bottomLayout = {
   yaxis: { tickmode: "array", tickvals: [] },
   xaxis: {
     tickmode: "array",
-    tickvals: [0, 50, 100],
-    ticktext: ["0", "50", "100"],
+    tickvals: [0, 33, 66, 100],
+    ticktext: ["0s", "1s", "2s", "3s"],
     range: [0, 100],
-    domain: [0.05, 0.915]
+    domain: [0.0225, 0.965]
   },
-  margin: { l: 0, t: 0 },
+  margin: { l: 0, t: 0 , r: 0},
   
 };
 
@@ -237,9 +237,67 @@ Plotly.react(
       },
       showticklabels: false
     },
-    margin: { l: 10, t: 25, b: 0 }
+    yaxis2: {
+      title: {
+        text: 'ch 2',
+      },
+      showticklabels: false
+    },
+    yaxis3: {
+      title: {
+        text: 'ch 3',
+      },
+      showticklabels: false
+    },
+    yaxis4: {
+      title: {
+        text: 'ch 4',
+      },
+      showticklabels: false
+    },
+    yaxis5: {
+      title: {
+        text: 'ch 5',
+      },
+      showticklabels: false
+    },
+    yaxis6: {
+      title: {
+        text: 'ch 6',
+      },
+      showticklabels: false
+    },
+    yaxis7: {
+      title: {
+        text: 'ch 7',
+      },
+      showticklabels: false
+    },
+    margin: { l: 25, t: 25, b: 0 , r: 25},
+    showlegend: false,
   },
   config
 );
 
 Plotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false });
+
+data = [{
+  y: [null],
+  name: 'Smooth Spikes',
+  mode: 'lines',
+  marker: {color: '#4e79a7'},
+},{
+  y: [null],
+  name: 'NDT Rates',
+  mode: 'lines',
+  marker: {color: '#e15759'},
+}]
+
+let newLayout = {
+  yaxis: { visible: false},
+  xaxis: { visible: false},
+  margin: { l: 0, t: 0, b: 0, r: 0 },
+  showlegend: true,
+  
+};
+Plotly.react("legend", data, newLayout, { displayModeBar: false });
