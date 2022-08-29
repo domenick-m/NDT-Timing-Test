@@ -121,4 +121,11 @@ fig.update_xaxes(
     tickvals=[i for i in range(0, x_range, 100)],
 )
 
-fig.write_html("new_file.html")
+fig.update_layout(legend=dict(
+    yanchor="top",
+    y=0.99,
+    xanchor="left",
+    x=0.01
+))
+
+fig.write_html("heldin_single.html")
