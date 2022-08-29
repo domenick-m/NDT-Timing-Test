@@ -236,7 +236,8 @@ Plotly.react(
       showticklabels: false
     },
     margin: { l: 0, t: 25, b: 0 }
-  }
+  },
+  config
 );
 
 Plotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false });
