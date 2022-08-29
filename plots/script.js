@@ -199,15 +199,17 @@ var data = [trace1, trace1r, trace2, trace2r, trace3, trace3r, trace4, trace4r, 
 
 let bottomTraces = [{ mode: "scatter" }];
 let bottomLayout = {
-  yaxis: { tickmode: "array", tickvals: [] },
+  yaxis: { tickmode: "array", tickvals: [], fixedrange: true },
   xaxis: {
     tickmode: "array",
     tickvals: [0, 33, 66, 100],
     ticktext: ["0s", "1s", "2s", "3s"],
     range: [0, 100],
-    domain: [0.0225, 0.965]
+    domain: [0.0, 1.0],
+    // domain: [0.02, 0.965],
+    fixedrange: true
   },
-  margin: { l: 0, t: 0 , r: 0},
+  margin: { l: 25, t: 0 , r: 40},
   
 };
 
@@ -228,50 +230,51 @@ Plotly.react(
   data,
   {
     xaxis: {
-      visible: false,
+      visible: false, fixedrange: true
     },
     grid: {rows: 98, columns: 1},
     yaxis: {
       title: {
         text: 'ch 1',
       },
-      showticklabels: false
+      
+      showticklabels: false, fixedrange: true
     },
     yaxis2: {
       title: {
         text: 'ch 2',
       },
-      showticklabels: false
+      showticklabels: false, fixedrange: true
     },
     yaxis3: {
       title: {
         text: 'ch 3',
       },
-      showticklabels: false
+      showticklabels: false, fixedrange: true
     },
     yaxis4: {
       title: {
         text: 'ch 4',
       },
-      showticklabels: false
+      showticklabels: false, fixedrange: true
     },
     yaxis5: {
       title: {
         text: 'ch 5',
       },
-      showticklabels: false
+      showticklabels: false, fixedrange: true
     },
     yaxis6: {
       title: {
         text: 'ch 6',
       },
-      showticklabels: false
+      showticklabels: false, fixedrange: true
     },
     yaxis7: {
       title: {
         text: 'ch 7',
       },
-      showticklabels: false
+      showticklabels: false, fixedrange: true
     },
     margin: { l: 25, t: 25, b: 0 , r: 25},
     showlegend: false,
@@ -279,7 +282,7 @@ Plotly.react(
   config
 );
 
-Plotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false });
+Plotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false, responsive: true });
 
 data = [{
   y: [null],
@@ -300,4 +303,4 @@ let newLayout = {
   showlegend: true,
   
 };
-Plotly.react("legend", data, newLayout, { displayModeBar: false });
+Plotly.react("legend", data, newLayout, { displayModeBar: false, responsive: true });
