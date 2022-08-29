@@ -232,10 +232,12 @@ Plotly.react(
     },
     grid: {rows: 98, columns: 1},
     yaxis: {
-      zeroline: false,
+      title: {
+        text: 'ch 1',
+      },
       showticklabels: false
     },
-    margin: { l: 0, t: 25, b: 0 }
+    margin: { l: 10, t: 25, b: 0 }
   },
   config
 );
