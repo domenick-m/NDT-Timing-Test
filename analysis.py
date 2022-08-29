@@ -94,7 +94,7 @@ um = [{
     'showactive':True,
     'x':0.0,
     'xanchor':"left",
-    'y':1.2,
+    'y':1.25,
     'yanchor':"top" 
 }]
 
@@ -123,9 +123,9 @@ fig.update_xaxes(
 
 fig.update_layout(legend=dict(
     yanchor="top",
-    y=0.99,
-    xanchor="left",
-    x=0.01
+    y=1.25,
+    xanchor="right",
+    x=1.00
 ))
 
 fig.write_html("heldin_single.html")
