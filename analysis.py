@@ -94,8 +94,8 @@ um = [{
     'showactive':True,
     'x':0.0,
     'xanchor':"left",
-    'y':1.25,
-    'yanchor':"top" 
+    'y':1.075,
+    'yanchor':"bottom" 
 }]
 
 fig.update_layout(updatemenus=um)
@@ -122,8 +122,8 @@ fig.update_xaxes(
 )
 
 fig.update_layout(legend=dict(
-    yanchor="top",
-    y=1.25,
+    yanchor="bottom",
+    y=1.035,
     xanchor="right",
     x=1.00
 ))
