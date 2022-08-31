@@ -53,6 +53,7 @@ model.eval()
    ╚════════════════════════════════════════════════════════════════════════╝
 '''
 print('Generating "HELDIN RATES VS SMTH SPIKES (RANGE SLIDER)" plot...')
+
 with torch.no_grad():
     train_rates = []
     for spikes, heldout_spikes in zip(
@@ -69,158 +70,264 @@ smth_spikes = torch.Tensor(h5dict['test_hi_smth_spikes'])
 heldout_smth_spikes = torch.Tensor(h5dict['test_ho_smth_spikes'])
 smth_spikes = torch.cat([smth_spikes, heldout_smth_spikes], -1)
 
-fig = go.Figure()
-x_range=2500
+# fig = go.Figure()
+# x_range=2500
 
-fig.add_trace(go.Scatter(y=list(train_rates[:x_range,0]), line=dict(color="#e15759"), name="NDT Rates",))
-fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,0]), line=dict(color="#4e79a7"), name="Smooth Spikes",))
-for i in range(98):
-    fig.add_trace(go.Scatter(y=list(train_rates[:x_range,i]), visible=False, line=dict(color="#e15759"), name="NDT Rates",))
-    fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,i]), visible=False, line=dict(color="#4e79a7"), name="Smooth Spikes",))
+# fig.add_trace(go.Scatter(y=list(train_rates[:x_range,0]), line=dict(color="#e15759"), name="NDT Rates",))
+# fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,0]), line=dict(color="#4e79a7"), name="Smooth Spikes",))
+# for i in range(1, 98):
+#     fig.add_trace(go.Scatter(y=list(train_rates[:x_range,i]), visible=False, line=dict(color="#e15759"), name="NDT Rates",))
+#     fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,i]), visible=False, line=dict(color="#4e79a7"), name="Smooth Spikes",))
 
-fig.update_layout(
-    xaxis=dict(
-        rangeselector=dict(),
-        rangeslider=dict(visible=True)
-    )
-)
+# fig.update_layout(
+#     xaxis=dict(
+#         rangeselector=dict(),
+#         rangeslider=dict(visible=True)
+#     )
+# )
 
-buttons = []
-for i in range(98):
-    vis_list = [False for i in range(196)]
-    vis_list[i*2] = True
-    vis_list[i*2+1] = True
-    buttons.append(dict(
-        method='restyle',
-        label=f'ch {i+1}',
-        visible=True,
-        args=[{'visible':vis_list,}]
-    ))
+# buttons = []
+# for i in range(98):
+#     vis_list = [False for i in range(196)]
+#     vis_list[i*2] = True
+#     vis_list[i*2+1] = True
+#     buttons.append(dict(
+#         method='restyle',
+#         label=f'ch {i+1}',
+#         visible=True,
+#         args=[{'visible':vis_list,}]
+#     ))
            
-# specify updatemenu        
-um = [{
-    'buttons':buttons, 
-    'direction': 'down',
-    'pad': {"r": 0, "t": 0},
-    'showactive':True,
-    'x':0.0,
-    'xanchor':"left",
-    'y':1.075,
-    'yanchor':"bottom" 
-}]
-fig.update_layout(updatemenus=um)
+# # specify updatemenu        
+# um = [{
+#     'buttons':buttons, 
+#     'direction': 'down',
+#     'pad': {"r": 0, "t": 0},
+#     'showactive':True,
+#     'x':0.0,
+#     'xanchor':"left",
+#     'y':1.075,
+#     'yanchor':"bottom" 
+# }]
+# fig.update_layout(updatemenus=um)
 
-fig['layout']['xaxis'].update(range=['0', '300'])
+# fig['layout']['xaxis'].update(range=['0', '300'])
 
-layout = go.Layout(
-    margin=go.layout.Margin(
-        l=0, #left margin
-        r=0, #right margin
-        b=0, #bottom margin
-        t=0  #top margin
-    )
-)
-fig.update_layout(layout)
+# layout = go.Layout(
+#     margin=go.layout.Margin(
+#         l=0, #left margin
+#         r=0, #right margin
+#         b=0, #bottom margin
+#         t=0  #top margin
+#     )
+# )
+# fig.update_layout(layout)
 
-fig.update_xaxes(
-    ticktext=[f'{int(i/100)}s' for i in range(0, x_range, 100)],
-    tickvals=[i for i in range(0, x_range, 100)],
-)
+# fig.update_xaxes(
+#     ticktext=[f'{int(i/100)}s' for i in range(0, x_range, 100)],
+#     tickvals=[i for i in range(0, x_range, 100)],
+# )
 
-fig.update_layout(legend=dict(
-    yanchor="bottom",
-    y=1.035,
-    xanchor="right",
-    x=1.00
-))
+# fig.update_layout(legend=dict(
+#     yanchor="bottom",
+#     y=1.035,
+#     xanchor="right",
+#     x=1.00
+# ))
 
-os.makedirs(f"plots/{name}")
-fig.write_html(f"plots/{name}/heldin_slider.html")
-print("Done!")
+# if not os.path.isdir(f"plots/{name}"): os.makedirs(f"plots/{name}")
+# fig.write_html(f"plots/{name}/spk_vs_rates_heldin_slider.html")
+# print("Done!")
 
-test = 0.0 / 0.0
+
+# '''
+#    ╔════════════════════════════════════════════════════════════════════════╗
+#    ║              HELDOUT RATES VS SMTH SPIKES (RANGE SLIDER)               ║
+#    ╚════════════════════════════════════════════════════════════════════════╝
+# '''
+# print('Generating "HELDOUT RATES VS SMTH SPIKES (RANGE SLIDER)" plot...')
+
+# fig = go.Figure()
+# x_range=2500
+
+# fig.add_trace(go.Scatter(y=list(train_rates[:x_range,98]), line=dict(color="#e15759"), name="NDT Rates",))
+# fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,98]), line=dict(color="#4e79a7"), name="Smooth Spikes",))
+# for i in range(99, 130):
+#     fig.add_trace(go.Scatter(y=list(train_rates[:x_range,i]), visible=False, line=dict(color="#e15759"), name="NDT Rates",))
+#     fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,i]), visible=False, line=dict(color="#4e79a7"), name="Smooth Spikes",))
+
+# fig.update_layout(
+#     xaxis=dict(
+#         rangeselector=dict(),
+#         rangeslider=dict(visible=True)
+#     )
+# )
+
+# buttons = []
+# for i in range(98, 130):
+#     vis_list = [False for i in range(64)]
+#     vis_list[(i-98)*2] = True
+#     vis_list[(i-98)*2+1] = True
+#     buttons.append(dict(
+#         method='restyle',
+#         label=f'ch {i+1}',
+#         visible=True,
+#         args=[{'visible':vis_list,}]
+#     ))
+           
+# # specify updatemenu        
+# um = [{
+#     'buttons':buttons, 
+#     'direction': 'down',
+#     'pad': {"r": 0, "t": 0},
+#     'showactive':True,
+#     'x':0.0,
+#     'xanchor':"left",
+#     'y':1.075,
+#     'yanchor':"bottom" 
+# }]
+# fig.update_layout(updatemenus=um)
+
+# fig['layout']['xaxis'].update(range=['0', '300'])
+
+# layout = go.Layout(
+#     margin=go.layout.Margin(
+#         l=0, #left margin
+#         r=0, #right margin
+#         b=0, #bottom margin
+#         t=0  #top margin
+#     )
+# )
+# fig.update_layout(layout)
+
+# fig.update_xaxes(
+#     ticktext=[f'{int(i/100)}s' for i in range(0, x_range, 100)],
+#     tickvals=[i for i in range(0, x_range, 100)],
+# )
+
+# fig.update_layout(legend=dict(
+#     yanchor="bottom",
+#     y=1.035,
+#     xanchor="right",
+#     x=1.00
+# ))
+
+# fig.write_html(f"plots/{name}/spk_vs_rates_heldout_slider.html")
+# print("Done!")
+
+
 '''
    ╔════════════════════════════════════════════════════════════════════════╗
-   ║              HELDOUT RATES VS SMTH SPIKES (RANGE SLIDER)               ║
+   ║               HELDIN RATES VS SMTH SPIKES (ALL CHANNELS)               ║
    ╚════════════════════════════════════════════════════════════════════════╝
 '''
-print('Generating "HELDOUT RATES VS SMTH SPIKES (RANGE SLIDER)" plot...')
-fig = go.Figure()
-x_range=2500
+print('Generating "HELDIN RATES VS SMTH SPIKES (ALL CHANNELS)" plot...')
 
-fig.add_trace(go.Scatter(y=list(train_rates[:x_range,0]), line=dict(color="#e15759"), name="NDT Rates",))
-fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,0]), line=dict(color="#4e79a7"), name="Smooth Spikes",))
-for i in range(98):
-    fig.add_trace(go.Scatter(y=list(train_rates[:x_range,i]), visible=False, line=dict(color="#e15759"), name="NDT Rates",))
-    fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,i]), visible=False, line=dict(color="#4e79a7"), name="Smooth Spikes",))
+def rates_string(neuron):
+    array_string = 'y: ['
+    for i in train_rates[:300,neuron]:
+        array_string += str(i.item())+','
+    array_string += '],'
+    return array_string
 
-fig.update_layout(
-    xaxis=dict(
-        rangeselector=dict(),
-        rangeslider=dict(visible=True)
-    )
-)
+def ss_string(neuron):
+    array_string = 'y: ['
+    for i in smth_spikes[:300,neuron]:
+        array_string += str(i.item())+','
+    array_string += '],'
+    return array_string
 
-buttons = []
-for i in range(98):
-    vis_list = [False for i in range(196)]
-    vis_list[i*2] = True
-    vis_list[i*2+1] = True
-    buttons.append(dict(
-        method='restyle',
-        label=f'ch {i+1}',
-        visible=True,
-        args=[{'visible':vis_list,}]
-    ))
-           
-# specify updatemenu        
-um = [{
-    'buttons':buttons, 
-    'direction': 'down',
-    'pad': {"r": 0, "t": 0},
-    'showactive':True,
-    'x':0.0,
-    'xanchor':"left",
-    'y':1.075,
-    'yanchor':"bottom" 
-}]
-fig.update_layout(updatemenus=um)
+with open(f"plots/{name}/spk_vs_rates_heldin_all.html", "w") as f:
+    f.write('<!DOCTYPE html><html lang="en" ><head><meta charset="UTF-8"><title>NDT Heldin Rates</title></head><body><!-- partial:index.partial.html --><div id="legend" style="height: 50px"></div><div style="height:450px; overflow-y: auto"><div id="plot" style="height:8000px"></div></div><div id="xaxis" style="height: 60px"></div><!-- partial --><script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.3.1/plotly.min.js"></script><script  src="./spk_vs_rates_heldin_all.js"></script></body></html>')
 
-fig['layout']['xaxis'].update(range=['0', '300'])
-
-layout = go.Layout(
-    margin=go.layout.Margin(
-        l=0, #left margin
-        r=0, #right margin
-        b=0, #bottom margin
-        t=0  #top margin
-    )
-)
-fig.update_layout(layout)
-
-fig.update_xaxes(
-    ticktext=[f'{int(i/100)}s' for i in range(0, x_range, 100)],
-    tickvals=[i for i in range(0, x_range, 100)],
-)
-
-fig.update_layout(legend=dict(
-    yanchor="bottom",
-    y=1.035,
-    xanchor="right",
-    x=1.00
-))
+with open(f"plots/{name}/spk_vs_rates_heldin_all.js", "w") as f:
+    names = []
+    for i in range(98):
+        names.append(f'trace{i+1}')
+        names.append(f'trace{i+1}r')
+        str_to_write = f'var trace{i+1} = {{'
+        str_to_write += ss_string(i)
+        str_to_write += f"marker: {{color: '#4e79a7'}},name: 'Smoothed Spikes',yaxis: 'y{i+1}',type: 'line',"
+        if i != 0:
+            str_to_write += "showlegend: false,"
+        str_to_write += f'}};\nvar trace{i+1}r = {{'
+        str_to_write += rates_string(i)
+        str_to_write += f"marker: {{color: '#e15759'}},name: 'NDT Rates',yaxis: 'y{i+1}',type: 'line',"
+        if i != 0:
+            str_to_write += "showlegend: false,"
+        str_to_write +='};\n'
+        f.write(str_to_write)
+    names_str = 'data = ['
+    for i in names:
+        names_str += f"{i}, "
+    names_str += ']'
+    f.write(names_str+f'\n')
+    f.write(f'let bottomTraces = [{{ mode: "scatter" }}];\nlet bottomLayout = {{yaxis: {{ tickmode: "array", tickvals: [], fixedrange: true }},xaxis: {{tickmode: "array",tickvals: [0, 33, 66, 100],ticktext: ["0s", "1s", "2s", "3s"],range: [0, 100],domain: [0.0, 1.0],fixedrange: true}},margin: {{ l: 25, t: 0 , r: 40}},}};\nvar config = {{responsive: true}};\nPlotly.react("plot",data,{{xaxis: {{visible: false, fixedrange: true}},grid: {{rows: 98, columns: 1}},')
+    axis_labels = f"\nyaxis: {{title: {{text: 'ch 1',}}, showticklabels: false, fixedrange: true}},\n"
+    for i in range(2,99):
+        axis_labels += f"yaxis{i}: {{title: {{text: 'ch {i}',}}, showticklabels: false, fixedrange: true}},\n"
+    f.write(axis_labels)
+    f.write('margin: { l: 25, t: 25, b: 0 , r: 25},showlegend: false,},config);\nPlotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false, responsive: true });\ndata = [{y: [null],name: "Smooth Spikes",mode: "lines",marker: {color: "#4e79a7"},},{y: [null],name: "NDT Rates",mode: "lines",marker: {color: "#e15759"},}];\nlet newLayout = {yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};\nPlotly.react("legend", data, newLayout, { displayModeBar: false, responsive: true });')
 
 print("Done!")
 
-"""
-HELDIN RATES VS SMTH SPIKES (ALL CHANNELS)
-"""
 
+'''
+   ╔════════════════════════════════════════════════════════════════════════╗
+   ║              HELDOUT RATES VS SMTH SPIKES (ALL CHANNELS)               ║
+   ╚════════════════════════════════════════════════════════════════════════╝
+'''
+print('Generating "HELDOUT RATES VS SMTH SPIKES (ALL CHANNELS)" plot...')
 
-"""
-HELDOUT RATES VS SMTH SPIKES (ALL CHANNELS)
-"""
+def rates_string(neuron):
+    array_string = 'y: ['
+    for i in train_rates[:300,neuron]:
+        array_string += str(i.item())+','
+    array_string += '],'
+    return array_string
 
+def ss_string(neuron):
+    array_string = 'y: ['
+    for i in smth_spikes[:300,neuron]:
+        array_string += str(i.item())+','
+    array_string += '],'
+    return array_string
+
+with open(f"plots/{name}/spk_vs_rates_heldin_all.html", "w") as f:
+    f.write('<!DOCTYPE html><html lang="en" ><head><meta charset="UTF-8"><title>NDT Heldin Rates</title></head><body><!-- partial:index.partial.html --><div id="legend" style="height: 50px"></div><div style="height:450px; overflow-y: auto"><div id="plot" style="height:8000px"></div></div><div id="xaxis" style="height: 60px"></div><!-- partial --><script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.3.1/plotly.min.js"></script><script  src="./spk_vs_rates_heldin_all.js"></script></body></html>')
+
+with open(f"plots/{name}/spk_vs_rates_heldin_all.js", "w") as f:
+    names = []
+    for i in range(98, 130):
+        names.append(f'trace{i+1}')
+        names.append(f'trace{i+1}r')
+        str_to_write = f'var trace{i+1} = {{'
+        str_to_write += ss_string(i)
+        str_to_write += f"marker: {{color: '#4e79a7'}},name: 'Smoothed Spikes',yaxis: 'y{i+1}',type: 'line',"
+        if i != 0:
+            str_to_write += "showlegend: false,"
+        str_to_write += f'}};\nvar trace{i+1}r = {{'
+        str_to_write += rates_string(i)
+        str_to_write += f"marker: {{color: '#e15759'}},name: 'NDT Rates',yaxis: 'y{i+1}',type: 'line',"
+        if i != 0:
+            str_to_write += "showlegend: false,"
+        str_to_write +='};\n'
+        f.write(str_to_write)
+    names_str = 'data = ['
+    for i in names:
+        names_str += f"{i}, "
+    names_str += ']'
+    f.write(names_str+f'\n')
+    f.write(f'let bottomTraces = [{{ mode: "scatter" }}];\nlet bottomLayout = {{yaxis: {{ tickmode: "array", tickvals: [], fixedrange: true }},xaxis: {{tickmode: "array",tickvals: [0, 33, 66, 100],ticktext: ["0s", "1s", "2s", "3s"],range: [0, 100],domain: [0.0, 1.0],fixedrange: true}},margin: {{ l: 25, t: 0 , r: 40}},}};\nvar config = {{responsive: true}};\nPlotly.react("plot",data,{{xaxis: {{visible: false, fixedrange: true}},grid: {{rows: 98, columns: 1}},')
+    axis_labels = f"\nyaxis: {{title: {{text: 'ch 99',}}, showticklabels: false, fixedrange: true}},\n"
+    for i in range(100,131):
+        axis_labels += f"yaxis{i-98}: {{title: {{text: 'ch {i}',}}, showticklabels: false, fixedrange: true}},\n"
+    f.write(axis_labels)
+    f.write('margin: { l: 25, t: 25, b: 0 , r: 25},showlegend: false,},config);\nPlotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false, responsive: true });\ndata = [{y: [null],name: "Smooth Spikes",mode: "lines",marker: {color: "#4e79a7"},},{y: [null],name: "NDT Rates",mode: "lines",marker: {color: "#e15759"},}];\nlet newLayout = {yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};\nPlotly.react("legend", data, newLayout, { displayModeBar: false, responsive: true });')
+
+print("Done!")
+
+test = 0.0/ 0.0
 
 """
 RATES VELOCITY DECODING R^2
