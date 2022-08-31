@@ -77,7 +77,7 @@ def get_train_data(smooth_std=50):
 
     return hi_spike_segments, ho_spike_segments
 
-def get_test_data(smooth_std=50, lag=120):
+def get_test_data(smooth_std=30, lag=140):
     ''' Returns binned heldin spikes (or smoothed spikes), heldout spikes, and velocity data 
     for training and testing set.
     '''
@@ -107,6 +107,8 @@ def get_test_data(smooth_std=50, lag=120):
 
         train_hi_spikes = np.apply_along_axis(filt, 1, train_hi_spikes)
         test_hi_spikes = np.apply_along_axis(filt, 1, test_hi_spikes)
+        test_ho_spikes = np.apply_along_axis(filt, 1, test_ho_spikes)
+        train_ho_spikes = np.apply_along_axis(filt, 1, train_ho_spikes)
 
     train_hi_spikes = train_hi_spikes[:, :-lag_bins, :]
     train_ho_spikes = train_ho_spikes[:, :-lag_bins, :]
@@ -166,7 +168,7 @@ def make_train_data(window=30, overlap=24):
     if osp.isfile(filename): os.remove(filename)
     save_to_h5(h5_file, filename, overwrite=True)
 
-def make_test_data(window=30, overlap=24, lag=120, smooth_std=50):
+def make_test_data(window=30, overlap=24, lag=70, smooth_std=50):
     ''' Creates chopped and binned heldin spikes, heldout spikes, and velocity for training 
     (full) and heldin spikes, heldout spikes, velocity, and smoothed spikes for test set
     then stores on disk as an h5 file. 
