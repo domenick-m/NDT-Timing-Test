@@ -701,8 +701,8 @@ for tid, trial in trial_data.groupby('trial_id'):
     )
 
 fig.update_layout(
-    width=1000,
-    height=700,
+    width=900,
+    height=600,
     autosize=False,
     showlegend=False,
     title="PCA of NDT Rates",
