@@ -90,7 +90,7 @@ vel_index = dataset.data.finger_vel[~nans.to_numpy() & ~nans.shift(lag_bins, fil
 spikes_hi = dataset.data.spikes[~nans.to_numpy() & ~nans.shift(-lag_bins, fill_value=True).to_numpy()].to_numpy()
 spikes_ho = dataset.data.heldout_spikes[~nans.to_numpy() & ~nans.shift(-lag_bins, fill_value=True).to_numpy()].to_numpy()
 
-print('Done!')
+print('Done!\n')
 
 
 '''
@@ -98,7 +98,7 @@ print('Done!')
    ║               HELDIN RATES VS SMTH SPIKES (RANGE SLIDER)               ║
    ╚════════════════════════════════════════════════════════════════════════╝
 '''
-print('Generating "HELDIN RATES VS SMTH SPIKES (RANGE SLIDER)" plot...')
+print('Generating "hi_indv_spk_vs_rates.html"...')
 
 with torch.no_grad():
     train_rates = []
@@ -188,8 +188,9 @@ fig.update_layout(
 
 if not os.path.isdir(f"plots/{name}"): os.makedirs(f"plots/{name}")
 config = {'displayModeBar': False}
-fig.write_html(f"plots/{name}/spk_vs_rates_heldin_slider.html", config=config)
-print("Done!")
+fig.write_html(f"plots/{name}/hi_indv_spk_vs_rates.html", config=config)
+
+print("Done!\n")
 
 
 '''
@@ -197,7 +198,7 @@ print("Done!")
    ║              HELDOUT RATES VS SMTH SPIKES (RANGE SLIDER)               ║
    ╚════════════════════════════════════════════════════════════════════════╝
 '''
-print('Generating "HELDOUT RATES VS SMTH SPIKES (RANGE SLIDER)" plot...')
+print('Generating "ho_indv_spk_vs_rates.html"...')
 
 fig = go.Figure()
 x_range=2500
@@ -268,46 +269,11 @@ fig.update_layout(
     yaxis_title="Spikes per Window",
     title="NDT Rates vs Smoothed Spikes",
 )
-# # specify updatemenu        
-# um = [{
-#     'buttons':buttons, 
-#     'direction': 'down',
-#     'pad': {"r": 0, "t": 0},
-#     'showactive':True,
-#     'x':0.0,
-#     'xanchor':"left",
-#     'y':1.075,
-#     'yanchor':"bottom" 
-# }]
-# fig.update_layout(updatemenus=um)
-
-# fig['layout']['xaxis'].update(range=['0', '300'])
-
-# layout = go.Layout(
-#     margin=go.layout.Margin(
-#         l=0, #left margin
-#         r=0, #right margin
-#         b=0, #bottom margin
-#         t=0  #top margin
-#     )
-# )
-# fig.update_layout(layout)
-
-# fig.update_xaxes(
-#     ticktext=[f'{int(i/100)}s' for i in range(0, x_range, 100)],
-#     tickvals=[i for i in range(0, x_range, 100)],
-# )
-
-# fig.update_layout(legend=dict(
-#     yanchor="bottom",
-#     y=1.035,
-#     xanchor="right",
-#     x=1.00
-# ))
 
 config = {'displayModeBar': False}
-fig.write_html(f"plots/{name}/spk_vs_rates_heldout_slider.html", config=config)
-print("Done!")
+fig.write_html(f"plots/{name}/ho_indv_spk_vs_rates.html", config=config)
+
+print("Done!\n")
 
 
 '''
@@ -315,7 +281,7 @@ print("Done!")
    ║               HELDIN RATES VS SMTH SPIKES (ALL CHANNELS)               ║
    ╚════════════════════════════════════════════════════════════════════════╝
 '''
-print('Generating "HELDIN RATES VS SMTH SPIKES (ALL CHANNELS)" plot...')
+print('Generating "hi_all_spk_vs_rates.html" & "hi_all_spk_vs_rates.js"...')
 
 def rates_string(neuron):
     array_string = 'y: ['
@@ -331,10 +297,10 @@ def ss_string(neuron):
     array_string += '],'
     return array_string
 
-with open(f"plots/{name}/spk_vs_rates_heldin_all.html", "w") as f:
-    f.write('<!DOCTYPE html><html lang="en" ><head><meta charset="UTF-8"><title>NDT Heldin Rates</title></head><body><!-- partial:index.partial.html --><div id="legend" style="height: 50px"></div><div style="height:450px; overflow-y: auto"><div id="plot" style="height:8000px"></div></div><div id="xaxis" style="height: 60px"></div><!-- partial --><script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.3.1/plotly.min.js"></script><script  src="./spk_vs_rates_heldin_all.js"></script></body></html>')
+with open(f"plots/{name}/hi_all_spk_vs_rates.html", "w") as f:
+    f.write('<!DOCTYPE html><html lang="en" ><head><meta charset="UTF-8"><title>NDT Heldin Rates</title></head><body><!-- partial:index.partial.html --><div id="legend" style="height: 50px"></div><div style="height:450px; overflow-y: auto"><div id="plot" style="height:8000px"></div></div><div id="xaxis" style="height: 60px"></div><!-- partial --><script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.3.1/plotly.min.js"></script><script  src="./hi_all_spk_vs_rates.js"></script></body></html>')
 
-with open(f"plots/{name}/spk_vs_rates_heldin_all.js", "w") as f:
+with open(f"plots/{name}/hi_all_spk_vs_rates.js", "w") as f:
     names = []
     for i in range(98):
         names.append(f'trace{i+1}')
@@ -363,7 +329,7 @@ with open(f"plots/{name}/spk_vs_rates_heldin_all.js", "w") as f:
     f.write(axis_labels)
     f.write('margin: { l: 25, t: 25, b: 0 , r: 25},showlegend: false,},config);\nPlotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false, responsive: true });\ndata = [{y: [null],name: "Smooth Spikes",mode: "lines",marker: {color: "#4e79a7"},},{y: [null],name: "NDT Rates",mode: "lines",marker: {color: "#e15759"},}];\nlet newLayout = {title: {text:"NDT Rates vs Smoothed Spikes", y:0.5, x:0.025},yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};\nPlotly.react("legend", data, newLayout, { displayModeBar: false, responsive: true });')
 
-print("Done!")
+print("Done!\n")
 
 
 '''
@@ -371,7 +337,7 @@ print("Done!")
    ║              HELDOUT RATES VS SMTH SPIKES (ALL CHANNELS)               ║
    ╚════════════════════════════════════════════════════════════════════════╝
 '''
-print('Generating "HELDOUT RATES VS SMTH SPIKES (ALL CHANNELS)" plot...')
+print('Generating "ho_all_spk_vs_rates.html" and "ho_all_spk_vs_rates.js"...')
 
 def rates_string(neuron):
     array_string = 'y: ['
@@ -387,10 +353,10 @@ def ss_string(neuron):
     array_string += '],'
     return array_string
 
-with open(f"plots/{name}/spk_vs_rates_heldout_all.html", "w") as f:
-    f.write('<!DOCTYPE html><html lang="en" ><head><meta charset="UTF-8"><title>NDT Heldin Rates</title></head><body><!-- partial:index.partial.html --><div id="legend" style="height: 50px"></div><div style="height:450px; overflow-y: auto"><div id="plot" style="height:2500px"></div></div><div id="xaxis" style="height: 60px"></div><!-- partial --><script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.3.1/plotly.min.js"></script><script  src="./spk_vs_rates_heldout_all.js"></script></body></html>')
+with open(f"plots/{name}/ho_all_spk_vs_rates.html", "w") as f:
+    f.write('<!DOCTYPE html><html lang="en" ><head><meta charset="UTF-8"><title>NDT Heldin Rates</title></head><body><!-- partial:index.partial.html --><div id="legend" style="height: 50px"></div><div style="height:450px; overflow-y: auto"><div id="plot" style="height:2500px"></div></div><div id="xaxis" style="height: 60px"></div><!-- partial --><script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.3.1/plotly.min.js"></script><script  src="./ho_all_spk_vs_rates.js"></script></body></html>')
 
-with open(f"plots/{name}/spk_vs_rates_heldout_all.js", "w") as f:
+with open(f"plots/{name}/ho_all_spk_vs_rates.js", "w") as f:
     names = []
     for i in range(98, 130):
         names.append(f'trace{i+1}')
@@ -419,7 +385,7 @@ with open(f"plots/{name}/spk_vs_rates_heldout_all.js", "w") as f:
     f.write(axis_labels)
     f.write('margin: { l: 25, t: 25, b: 0 , r: 25},showlegend: false,},config);\nPlotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false, responsive: true });\ndata = [{y: [null],name: "Smooth Spikes",mode: "lines",marker: {color: "#4e79a7"},},{y: [null],name: "NDT Rates",mode: "lines",marker: {color: "#e15759"},}];\nlet newLayout = {title: {text:"NDT Rates vs Smoothed Spikes", y:0.5, x:0.025},yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};\nPlotly.react("legend", data, newLayout, { displayModeBar: false, responsive: true });')
 
-print("Done!")
+print("Done!\n")
 
 
 '''
@@ -427,7 +393,7 @@ print("Done!")
    ║                      RATES VELOCITY DECODING R^2                       ║
    ╚════════════════════════════════════════════════════════════════════════╝
 '''
-print('Generating "RATES VELOCITY DECODING R^2"...')
+print('Training an OLE on NDT Rates...')
 
 def chop_and_infer(func,
                    data,
@@ -487,7 +453,7 @@ rates = np.exp(output)
 
 gscv = GridSearchCV(Ridge(), {'alpha': np.logspace(-4, 0, 9)})
 gscv.fit(rates, vel)
-print(f'NDT Decoding R2 on filtered trials: {gscv.best_score_}')
+print(f'╔═══════════════════════════╗\n║ NDT Rates Decoding:       ║\n║   {{gscv.best_score_}:.3f} R\u00b2                ║\n╚═══════════════════════════╝')
 pred_vel = gscv.predict(rates)
 
 pred_vel_df = pd.DataFrame(pred_vel, index=vel_index, columns=pd.MultiIndex.from_tuples([('pred_vel', 'x'), ('pred_vel', 'y')]))
@@ -504,8 +470,7 @@ pca.fit(rates)
 pca_comps = pca.transform(rates)
 
 pca_df = pd.DataFrame(pca_comps, index=vel_index, columns=pd.MultiIndex.from_tuples([('pca', 'x'), ('pca', 'y'), ('pca', 'z')]))
-
-print("Done!")
+dataset.data = pd.concat([dataset.data, pca_df], axis=1)
 
 
 '''
@@ -513,13 +478,13 @@ print("Done!")
    ║                    SMTH SPIKES VELOCITY DECODING R^2                   ║
    ╚════════════════════════════════════════════════════════════════════════╝
 '''
-print('Generating "SMTH SPIKES VELOCITY DECODING R^2"...')
+print('\nTraining an OLE on Smoothed Spikes...')
 
 rates = dataset.data.spikes_smth_50[~nans.to_numpy() & ~nans.shift(-lag_bins, fill_value=True).to_numpy()].to_numpy()
 
 gscv = GridSearchCV(Ridge(), {'alpha': np.logspace(-4, 0, 9)})
 gscv.fit(rates, vel)
-print(f'Smoothed Spikes Decoding R2 on filtered trials: {gscv.best_score_}')
+print(f'╔═══════════════════════════╗\n║ Smoothed Spikes Decoding: ║\n║   {gscv.best_score_:.3f} R\u00b2                ║\n╚═══════════════════════════╝')
 smth_pred_vel = gscv.predict(rates)
 
 smth_pred_vel_df = pd.DataFrame(smth_pred_vel, index=vel_index, columns=pd.MultiIndex.from_tuples([('smth_pred_vel', 'x'), ('smth_pred_vel', 'y')]))
@@ -538,15 +503,13 @@ pca_comps = pca.transform(rates)
 pca_df = pd.DataFrame(pca_comps, index=vel_index, columns=pd.MultiIndex.from_tuples([('smth_pca', 'x'), ('smth_pca', 'y'), ('smth_pca', 'z')]))
 dataset.data = pd.concat([dataset.data, pca_df], axis=1)
 
-print("Done!")
-
 
 '''
    ╔════════════════════════════════════════════════════════════════════════╗
-   ║                 RATES PREDICTED VELOCITY (TRIAL SLIDER)                ║
+   ║                   PREDICTED MOVEMENT (TRIAL SLIDER)                    ║
    ╚════════════════════════════════════════════════════════════════════════╝
 '''
-print('Generating "RATES PREDICTED VELOCITY (TRIAL SLIDER)" plot...')
+print('\nGenerating "true_vs_pred_movement.html"...')
 
 trial_data = dataset.make_trial_data(align_field='speed_onset', align_range=(-290, 750), allow_nans=True)
 
@@ -707,48 +670,35 @@ layout = go.Layout(
 )
 fig.update_layout(layout)
 config = {'displayModeBar': False}
-fig.write_html(f"plots/{name}/velocity_slider.html", config=config)
-test = 0.0 / 0.0
+fig.write_html(f"plots/{name}/true_vs_pred_movement.html", config=config)
 
-# trials = trial_data.trial_id.unique()
+print("Done!\n")
 
-# for tid, trial in trial_data.groupby('trial_id'):
-#     if tid in trials[:5]:
-#         fig = plt.figure(figsize=(8,8))
-#         angle = dataset.trial_info[dataset.trial_info.trial_id == tid].reach_angle
-#         plt.plot(np.cumsum(trial.pred_vel.to_numpy()[29:, 0]), np.cumsum(trial.pred_vel.to_numpy()[29:, 1]), color='tab:red', label='NDT Predicted Velocity')
-#         plt.plot(
-#             np.cumsum(trial.smth_pred_vel.x.to_numpy()[29:]), 
-#             np.cumsum(trial.smth_pred_vel.y.to_numpy()[29:]), 
-#             color='tab:blue', 
-#             label='Smoothing Predicted Velocity'
-#         )
-#         plt.plot(
-#             np.cumsum(trial.finger_vel.x.to_numpy()[29:]), 
-#             np.cumsum(trial.finger_vel.y.to_numpy()[29:]), 
-#             color='black', 
-#             label='True Velocity'
-#         )
-#         plt.legend()
-#         plt.savefig(f'test_vel_{tid}.png')
+
+'''
+   ╔════════════════════════════════════════════════════════════════════════╗
+   ║                             RATES PCA PLOT                             ║
+   ╚════════════════════════════════════════════════════════════════════════╝
+'''
+print('Generating "rates_pca.html"...')
+
+
+
+print("Done!\n")
+
+
+'''
+   ╔════════════════════════════════════════════════════════════════════════╗
+   ║                          SMTH SPIKES PCA PLOT                          ║
+   ╚════════════════════════════════════════════════════════════════════════╝
+'''
+print('Generating "smth_pca.html"...')
+
+
 
 print("Done!")
 
-"""
-SMTH SPIKES PREDICTED VELOCITY (TRIAL SLIDER)
-"""
-
-
-"""
-RATES PCA PLOT
-"""
-
-
-"""
-SMTH SPIKES PCA PLOT
-"""
-
-
+test = 0.0 / 0.0
 
 # import numpy as np
 # import matplotlib as mpl
