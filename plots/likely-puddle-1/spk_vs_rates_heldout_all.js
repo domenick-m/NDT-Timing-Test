@@ -65,7 +65,7 @@ var trace130r = {y: [0.0010544662363827229,0.001254628412425518,0.00132644770201
 data = [trace99, trace99r, trace100, trace100r, trace101, trace101r, trace102, trace102r, trace103, trace103r, trace104, trace104r, trace105, trace105r, trace106, trace106r, trace107, trace107r, trace108, trace108r, trace109, trace109r, trace110, trace110r, trace111, trace111r, trace112, trace112r, trace113, trace113r, trace114, trace114r, trace115, trace115r, trace116, trace116r, trace117, trace117r, trace118, trace118r, trace119, trace119r, trace120, trace120r, trace121, trace121r, trace122, trace122r, trace123, trace123r, trace124, trace124r, trace125, trace125r, trace126, trace126r, trace127, trace127r, trace128, trace128r, trace129, trace129r, trace130, trace130r, ]
 let bottomTraces = [{ mode: "scatter" }];
 let bottomLayout = {yaxis: { tickmode: "array", tickvals: [], fixedrange: true },xaxis: {tickmode: "array",tickvals: [0, 33, 66, 100],ticktext: ["0s", "1s", "2s", "3s"],range: [0, 100],domain: [0.0, 1.0],fixedrange: true},margin: { l: 25, t: 0 , r: 40},};
-var config = {responsive: true};
+var config = {responsive: true, displayModeBar: false};
 Plotly.react("plot",data,{xaxis: {visible: false, fixedrange: true},grid: {rows: 32, columns: 1},
 yaxis: {title: {text: 'ch 99',}, showticklabels: false, fixedrange: true},
 yaxis2: {title: {text: 'ch 100',}, showticklabels: false, fixedrange: true},
@@ -102,5 +102,5 @@ yaxis32: {title: {text: 'ch 130',}, showticklabels: false, fixedrange: true},
 margin: { l: 25, t: 25, b: 0 , r: 25},showlegend: false,},config);
 Plotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false, responsive: true });
 data = [{y: [null],name: "Smooth Spikes",mode: "lines",marker: {color: "#4e79a7"},},{y: [null],name: "NDT Rates",mode: "lines",marker: {color: "#e15759"},}];
-let newLayout = {yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};
+let newLayout = {title: {text:"NDT Rates vs Smoothed Spikes", y:0.5, x:0.025},yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};
 Plotly.react("legend", data, newLayout, { displayModeBar: false, responsive: true });
