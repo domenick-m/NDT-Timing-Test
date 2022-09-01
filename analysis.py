@@ -116,276 +116,276 @@ smth_spikes = torch.Tensor(h5dict['test_hi_smth_spikes'])
 heldout_smth_spikes = torch.Tensor(h5dict['test_ho_smth_spikes'])
 smth_spikes = torch.cat([smth_spikes, heldout_smth_spikes], -1)
 
-fig = go.Figure()
-x_range=2500
+# fig = go.Figure()
+# x_range=2500
 
-fig.add_trace(go.Scatter(y=list(train_rates[:x_range,0]), line=dict(color="#e15759"), name="NDT Rates",))
-fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,0]), line=dict(color="#4e79a7"), name="Smooth Spikes",))
-for i in range(1, 98):
-    fig.add_trace(go.Scatter(y=list(train_rates[:x_range,i]), visible=False, line=dict(color="#e15759"), name="NDT Rates",))
-    fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,i]), visible=False, line=dict(color="#4e79a7"), name="Smooth Spikes",))
+# fig.add_trace(go.Scatter(y=list(train_rates[:x_range,0]), line=dict(color="#e15759"), name="NDT Rates",))
+# fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,0]), line=dict(color="#4e79a7"), name="Smooth Spikes",))
+# for i in range(1, 98):
+#     fig.add_trace(go.Scatter(y=list(train_rates[:x_range,i]), visible=False, line=dict(color="#e15759"), name="NDT Rates",))
+#     fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,i]), visible=False, line=dict(color="#4e79a7"), name="Smooth Spikes",))
 
-fig.update_layout(
-    xaxis=dict(
-        rangeselector=dict(),
-        rangeslider=dict(visible=True)
-    )
-)
+# fig.update_layout(
+#     xaxis=dict(
+#         rangeselector=dict(),
+#         rangeslider=dict(visible=True)
+#     )
+# )
 
-buttons = []
-for i in range(98):
-    vis_list = [False for i in range(196)]
-    vis_list[i*2] = True
-    vis_list[i*2+1] = True
-    buttons.append(dict(
-        method='restyle',
-        label=f'ch {i+1}',
-        visible=True,
-        args=[{'visible':vis_list,}]
-    ))
+# buttons = []
+# for i in range(98):
+#     vis_list = [False for i in range(196)]
+#     vis_list[i*2] = True
+#     vis_list[i*2+1] = True
+#     buttons.append(dict(
+#         method='restyle',
+#         label=f'ch {i+1}',
+#         visible=True,
+#         args=[{'visible':vis_list,}]
+#     ))
            
-# specify updatemenu        
-um = [{
-    'buttons':buttons, 
-    'direction': 'down',
-    'pad': {"r": 0, "t": 0, "b":20},
-    'showactive':True,
-    'x':0.5,
-    'xanchor':"center",
-    'y':1.00,
-    'yanchor':"bottom" 
-}]
-fig.update_layout(updatemenus=um)
+# # specify updatemenu        
+# um = [{
+#     'buttons':buttons, 
+#     'direction': 'down',
+#     'pad': {"r": 0, "t": 0, "b":20},
+#     'showactive':True,
+#     'x':0.5,
+#     'xanchor':"center",
+#     'y':1.00,
+#     'yanchor':"bottom" 
+# }]
+# fig.update_layout(updatemenus=um)
 
-fig['layout']['xaxis'].update(range=['0', '300'])
+# fig['layout']['xaxis'].update(range=['0', '300'])
 
-layout = go.Layout(
-    margin=go.layout.Margin(
-        l=60, #left margin
-        r=0, #right margin
-        b=0, #bottom margin
-        t=0  #top margin
-    )
-)
-fig.update_layout(layout)
+# layout = go.Layout(
+#     margin=go.layout.Margin(
+#         l=60, #left margin
+#         r=0, #right margin
+#         b=0, #bottom margin
+#         t=0  #top margin
+#     )
+# )
+# fig.update_layout(layout)
 
-fig.update_xaxes(
-    ticktext=[f'{int(i/100)}s' for i in range(0, x_range, 100)],
-    tickvals=[i for i in range(0, x_range, 100)],
-)
+# fig.update_xaxes(
+#     ticktext=[f'{int(i/100)}s' for i in range(0, x_range, 100)],
+#     tickvals=[i for i in range(0, x_range, 100)],
+# )
 
-fig.update_layout(
-    legend=dict(
-        yanchor="bottom",
-        y=1.035,
-        xanchor="right",
-        x=1.00,
-    ),
-    # xaxis_title="Time",
-    yaxis_title="Spikes per Window",
-    title="NDT Rates vs Smoothed Spikes",
-)
+# fig.update_layout(
+#     legend=dict(
+#         yanchor="bottom",
+#         y=1.035,
+#         xanchor="right",
+#         x=1.00,
+#     ),
+#     # xaxis_title="Time",
+#     yaxis_title="Spikes per Window",
+#     title="NDT Rates vs Smoothed Spikes",
+# )
 
-if not os.path.isdir(f"plots/{name}"): os.makedirs(f"plots/{name}")
-config = {'displayModeBar': False}
-fig.write_html(f"plots/{name}/hi_indv_spk_vs_rates.html", config=config)
+# if not os.path.isdir(f"plots/{name}"): os.makedirs(f"plots/{name}")
+# config = {'displayModeBar': False}
+# fig.write_html(f"plots/{name}/hi_indv_spk_vs_rates.html", config=config)
 
-print("Done!\n")
+# print("Done!\n")
 
 
-'''
-   ╔════════════════════════════════════════════════════════════════════════╗
-   ║              HELDOUT RATES VS SMTH SPIKES (RANGE SLIDER)               ║
-   ╚════════════════════════════════════════════════════════════════════════╝
-'''
-print('Generating "ho_indv_spk_vs_rates.html"...')
+# '''
+#    ╔════════════════════════════════════════════════════════════════════════╗
+#    ║              HELDOUT RATES VS SMTH SPIKES (RANGE SLIDER)               ║
+#    ╚════════════════════════════════════════════════════════════════════════╝
+# '''
+# print('Generating "ho_indv_spk_vs_rates.html"...')
 
-fig = go.Figure()
-x_range=2500
+# fig = go.Figure()
+# x_range=2500
 
-fig.add_trace(go.Scatter(y=list(train_rates[:x_range,98]), line=dict(color="#e15759"), name="NDT Rates",))
-fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,98]), line=dict(color="#4e79a7"), name="Smooth Spikes",))
-for i in range(99, 130):
-    fig.add_trace(go.Scatter(y=list(train_rates[:x_range,i]), visible=False, line=dict(color="#e15759"), name="NDT Rates",))
-    fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,i]), visible=False, line=dict(color="#4e79a7"), name="Smooth Spikes",))
+# fig.add_trace(go.Scatter(y=list(train_rates[:x_range,98]), line=dict(color="#e15759"), name="NDT Rates",))
+# fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,98]), line=dict(color="#4e79a7"), name="Smooth Spikes",))
+# for i in range(99, 130):
+#     fig.add_trace(go.Scatter(y=list(train_rates[:x_range,i]), visible=False, line=dict(color="#e15759"), name="NDT Rates",))
+#     fig.add_trace(go.Scatter(y=list(smth_spikes[:x_range,i]), visible=False, line=dict(color="#4e79a7"), name="Smooth Spikes",))
 
-fig.update_layout(
-    xaxis=dict(
-        rangeselector=dict(),
-        rangeslider=dict(visible=True)
-    )
-)
+# fig.update_layout(
+#     xaxis=dict(
+#         rangeselector=dict(),
+#         rangeslider=dict(visible=True)
+#     )
+# )
 
-buttons = []
-for i in range(98, 130):
-    vis_list = [False for i in range(64)]
-    vis_list[(i-98)*2] = True
-    vis_list[(i-98)*2+1] = True
-    buttons.append(dict(
-        method='restyle',
-        label=f'ch {i+1}',
-        visible=True,
-        args=[{'visible':vis_list,}]
-    ))
+# buttons = []
+# for i in range(98, 130):
+#     vis_list = [False for i in range(64)]
+#     vis_list[(i-98)*2] = True
+#     vis_list[(i-98)*2+1] = True
+#     buttons.append(dict(
+#         method='restyle',
+#         label=f'ch {i+1}',
+#         visible=True,
+#         args=[{'visible':vis_list,}]
+#     ))
            
-# specify updatemenu        
-um = [{
-    'buttons':buttons, 
-    'direction': 'down',
-    'pad': {"r": 0, "t": 0, "b":20},
-    'showactive':True,
-    'x':0.5,
-    'xanchor':"center",
-    'y':1.00,
-    'yanchor':"bottom" 
-}]
-fig.update_layout(updatemenus=um)
+# # specify updatemenu        
+# um = [{
+#     'buttons':buttons, 
+#     'direction': 'down',
+#     'pad': {"r": 0, "t": 0, "b":20},
+#     'showactive':True,
+#     'x':0.5,
+#     'xanchor':"center",
+#     'y':1.00,
+#     'yanchor':"bottom" 
+# }]
+# fig.update_layout(updatemenus=um)
 
-fig['layout']['xaxis'].update(range=['0', '300'])
+# fig['layout']['xaxis'].update(range=['0', '300'])
 
-layout = go.Layout(
-    margin=go.layout.Margin(
-        l=60, #left margin
-        r=0, #right margin
-        b=0, #bottom margin
-        t=0  #top margin
-    )
-)
-fig.update_layout(layout)
+# layout = go.Layout(
+#     margin=go.layout.Margin(
+#         l=60, #left margin
+#         r=0, #right margin
+#         b=0, #bottom margin
+#         t=0  #top margin
+#     )
+# )
+# fig.update_layout(layout)
 
-fig.update_xaxes(
-    ticktext=[f'{int(i/100)}s' for i in range(0, x_range, 100)],
-    tickvals=[i for i in range(0, x_range, 100)],
-)
+# fig.update_xaxes(
+#     ticktext=[f'{int(i/100)}s' for i in range(0, x_range, 100)],
+#     tickvals=[i for i in range(0, x_range, 100)],
+# )
 
-fig.update_layout(
-    legend=dict(
-        yanchor="bottom",
-        y=1.035,
-        xanchor="right",
-        x=1.00,
-    ),
-    # xaxis_title="Time",
-    yaxis_title="Spikes per Window",
-    title="NDT Rates vs Smoothed Spikes",
-)
+# fig.update_layout(
+#     legend=dict(
+#         yanchor="bottom",
+#         y=1.035,
+#         xanchor="right",
+#         x=1.00,
+#     ),
+#     # xaxis_title="Time",
+#     yaxis_title="Spikes per Window",
+#     title="NDT Rates vs Smoothed Spikes",
+# )
 
-config = {'displayModeBar': False}
-fig.write_html(f"plots/{name}/ho_indv_spk_vs_rates.html", config=config)
+# config = {'displayModeBar': False}
+# fig.write_html(f"plots/{name}/ho_indv_spk_vs_rates.html", config=config)
 
-print("Done!\n")
-
-
-'''
-   ╔════════════════════════════════════════════════════════════════════════╗
-   ║               HELDIN RATES VS SMTH SPIKES (ALL CHANNELS)               ║
-   ╚════════════════════════════════════════════════════════════════════════╝
-'''
-print('Generating "hi_all_spk_vs_rates.html" & "hi_all_spk_vs_rates.js"...')
-
-def rates_string(neuron):
-    array_string = 'y: ['
-    for i in train_rates[:300,neuron]:
-        array_string += str(i.item())+','
-    array_string += '],'
-    return array_string
-
-def ss_string(neuron):
-    array_string = 'y: ['
-    for i in smth_spikes[:300,neuron]:
-        array_string += str(i.item())+','
-    array_string += '],'
-    return array_string
-
-with open(f"plots/{name}/hi_all_spk_vs_rates.html", "w") as f:
-    f.write('<!DOCTYPE html><html lang="en" ><head><meta charset="UTF-8"><title>NDT Heldin Rates</title></head><body><!-- partial:index.partial.html --><div id="legend" style="height: 50px"></div><div style="height:450px; overflow-y: auto"><div id="plot" style="height:8000px"></div></div><div id="xaxis" style="height: 60px"></div><!-- partial --><script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.3.1/plotly.min.js"></script><script  src="./hi_all_spk_vs_rates.js"></script></body></html>')
-
-with open(f"plots/{name}/hi_all_spk_vs_rates.js", "w") as f:
-    names = []
-    for i in range(98):
-        names.append(f'trace{i+1}')
-        names.append(f'trace{i+1}r')
-        str_to_write = f'var trace{i+1} = {{'
-        str_to_write += ss_string(i)
-        str_to_write += f"marker: {{color: '#4e79a7'}},name: 'Smoothed Spikes',yaxis: 'y{i+1}',type: 'line',"
-        if i != 0:
-            str_to_write += "showlegend: false,"
-        str_to_write += f'}};\nvar trace{i+1}r = {{'
-        str_to_write += rates_string(i)
-        str_to_write += f"marker: {{color: '#e15759'}},name: 'NDT Rates',yaxis: 'y{i+1}',type: 'line',"
-        if i != 0:
-            str_to_write += "showlegend: false,"
-        str_to_write +='};\n'
-        f.write(str_to_write)
-    names_str = 'data = ['
-    for i in names:
-        names_str += f"{i}, "
-    names_str += ']'
-    f.write(names_str+f'\n')
-    f.write(f'let bottomTraces = [{{ mode: "scatter" }}];\nlet bottomLayout = {{yaxis: {{ tickmode: "array", tickvals: [], fixedrange: true }},xaxis: {{tickmode: "array",tickvals: [0, 33, 66, 100],ticktext: ["0s", "1s", "2s", "3s"],range: [0, 100],domain: [0.0, 1.0],fixedrange: true}},margin: {{ l: 25, t: 0 , r: 40}},}};\nvar config = {{responsive: true, displayModeBar: false}};\nPlotly.react("plot",data,{{xaxis: {{visible: false, fixedrange: true}},grid: {{rows: 98, columns: 1}},')
-    axis_labels = f"\nyaxis: {{title: {{text: 'ch 1',}}, showticklabels: false, fixedrange: true}},\n"
-    for i in range(2,99):
-        axis_labels += f"yaxis{i}: {{title: {{text: 'ch {i}',}}, showticklabels: false, fixedrange: true}},\n"
-    f.write(axis_labels)
-    f.write('margin: { l: 25, t: 25, b: 0 , r: 25},showlegend: false,},config);\nPlotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false, responsive: true });\ndata = [{y: [null],name: "Smooth Spikes",mode: "lines",marker: {color: "#4e79a7"},},{y: [null],name: "NDT Rates",mode: "lines",marker: {color: "#e15759"},}];\nlet newLayout = {title: {text:"NDT Rates vs Smoothed Spikes", y:0.5, x:0.025},yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};\nPlotly.react("legend", data, newLayout, { displayModeBar: false, responsive: true });')
-
-print("Done!\n")
+# print("Done!\n")
 
 
-'''
-   ╔════════════════════════════════════════════════════════════════════════╗
-   ║              HELDOUT RATES VS SMTH SPIKES (ALL CHANNELS)               ║
-   ╚════════════════════════════════════════════════════════════════════════╝
-'''
-print('Generating "ho_all_spk_vs_rates.html" and "ho_all_spk_vs_rates.js"...')
+# '''
+#    ╔════════════════════════════════════════════════════════════════════════╗
+#    ║               HELDIN RATES VS SMTH SPIKES (ALL CHANNELS)               ║
+#    ╚════════════════════════════════════════════════════════════════════════╝
+# '''
+# print('Generating "hi_all_spk_vs_rates.html" & "hi_all_spk_vs_rates.js"...')
 
-def rates_string(neuron):
-    array_string = 'y: ['
-    for i in train_rates[:300,neuron]:
-        array_string += str(i.item())+','
-    array_string += '],'
-    return array_string
+# def rates_string(neuron):
+#     array_string = 'y: ['
+#     for i in train_rates[:300,neuron]:
+#         array_string += str(i.item())+','
+#     array_string += '],'
+#     return array_string
 
-def ss_string(neuron):
-    array_string = 'y: ['
-    for i in smth_spikes[:300,neuron]:
-        array_string += str(i.item())+','
-    array_string += '],'
-    return array_string
+# def ss_string(neuron):
+#     array_string = 'y: ['
+#     for i in smth_spikes[:300,neuron]:
+#         array_string += str(i.item())+','
+#     array_string += '],'
+#     return array_string
 
-with open(f"plots/{name}/ho_all_spk_vs_rates.html", "w") as f:
-    f.write('<!DOCTYPE html><html lang="en" ><head><meta charset="UTF-8"><title>NDT Heldin Rates</title></head><body><!-- partial:index.partial.html --><div id="legend" style="height: 50px"></div><div style="height:450px; overflow-y: auto"><div id="plot" style="height:2500px"></div></div><div id="xaxis" style="height: 60px"></div><!-- partial --><script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.3.1/plotly.min.js"></script><script  src="./ho_all_spk_vs_rates.js"></script></body></html>')
+# with open(f"plots/{name}/hi_all_spk_vs_rates.html", "w") as f:
+#     f.write('<!DOCTYPE html><html lang="en" ><head><meta charset="UTF-8"><title>NDT Heldin Rates</title></head><body><!-- partial:index.partial.html --><div id="legend" style="height: 50px"></div><div style="height:450px; overflow-y: auto"><div id="plot" style="height:8000px"></div></div><div id="xaxis" style="height: 60px"></div><!-- partial --><script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.3.1/plotly.min.js"></script><script  src="./hi_all_spk_vs_rates.js"></script></body></html>')
 
-with open(f"plots/{name}/ho_all_spk_vs_rates.js", "w") as f:
-    names = []
-    for i in range(98, 130):
-        names.append(f'trace{i+1}')
-        names.append(f'trace{i+1}r')
-        str_to_write = f'var trace{i+1} = {{'
-        str_to_write += ss_string(i)
-        str_to_write += f"marker: {{color: '#4e79a7'}},name: 'Smoothed Spikes',yaxis: 'y{i-97}',type: 'line',"
-        if i != 0:
-            str_to_write += "showlegend: false,"
-        str_to_write += f'}};\nvar trace{i+1}r = {{'
-        str_to_write += rates_string(i)
-        str_to_write += f"marker: {{color: '#e15759'}},name: 'NDT Rates',yaxis: 'y{i-97}',type: 'line',"
-        if i != 0:
-            str_to_write += "showlegend: false,"
-        str_to_write +='};\n'
-        f.write(str_to_write)
-    names_str = 'data = ['
-    for i in names:
-        names_str += f"{i}, "
-    names_str += ']'
-    f.write(names_str+f'\n')
-    f.write(f'let bottomTraces = [{{ mode: "scatter" }}];\nlet bottomLayout = {{yaxis: {{ tickmode: "array", tickvals: [], fixedrange: true }},xaxis: {{tickmode: "array",tickvals: [0, 33, 66, 100],ticktext: ["0s", "1s", "2s", "3s"],range: [0, 100],domain: [0.0, 1.0],fixedrange: true}},margin: {{ l: 25, t: 0 , r: 40}},}};\nvar config = {{responsive: true, displayModeBar: false}};\nPlotly.react("plot",data,{{xaxis: {{visible: false, fixedrange: true}},grid: {{rows: 32, columns: 1}},')
-    axis_labels = f"\nyaxis: {{title: {{text: 'ch 99',}}, showticklabels: false, fixedrange: true}},\n"
-    for i in range(100,131):
-        axis_labels += f"yaxis{i-98}: {{title: {{text: 'ch {i}',}}, showticklabels: false, fixedrange: true}},\n"
-    f.write(axis_labels)
-    f.write('margin: { l: 25, t: 25, b: 0 , r: 25},showlegend: false,},config);\nPlotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false, responsive: true });\ndata = [{y: [null],name: "Smooth Spikes",mode: "lines",marker: {color: "#4e79a7"},},{y: [null],name: "NDT Rates",mode: "lines",marker: {color: "#e15759"},}];\nlet newLayout = {title: {text:"NDT Rates vs Smoothed Spikes", y:0.5, x:0.025},yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};\nPlotly.react("legend", data, newLayout, { displayModeBar: false, responsive: true });')
+# with open(f"plots/{name}/hi_all_spk_vs_rates.js", "w") as f:
+#     names = []
+#     for i in range(98):
+#         names.append(f'trace{i+1}')
+#         names.append(f'trace{i+1}r')
+#         str_to_write = f'var trace{i+1} = {{'
+#         str_to_write += ss_string(i)
+#         str_to_write += f"marker: {{color: '#4e79a7'}},name: 'Smoothed Spikes',yaxis: 'y{i+1}',type: 'line',"
+#         if i != 0:
+#             str_to_write += "showlegend: false,"
+#         str_to_write += f'}};\nvar trace{i+1}r = {{'
+#         str_to_write += rates_string(i)
+#         str_to_write += f"marker: {{color: '#e15759'}},name: 'NDT Rates',yaxis: 'y{i+1}',type: 'line',"
+#         if i != 0:
+#             str_to_write += "showlegend: false,"
+#         str_to_write +='};\n'
+#         f.write(str_to_write)
+#     names_str = 'data = ['
+#     for i in names:
+#         names_str += f"{i}, "
+#     names_str += ']'
+#     f.write(names_str+f'\n')
+#     f.write(f'let bottomTraces = [{{ mode: "scatter" }}];\nlet bottomLayout = {{yaxis: {{ tickmode: "array", tickvals: [], fixedrange: true }},xaxis: {{tickmode: "array",tickvals: [0, 33, 66, 100],ticktext: ["0s", "1s", "2s", "3s"],range: [0, 100],domain: [0.0, 1.0],fixedrange: true}},margin: {{ l: 25, t: 0 , r: 40}},}};\nvar config = {{responsive: true, displayModeBar: false}};\nPlotly.react("plot",data,{{xaxis: {{visible: false, fixedrange: true}},grid: {{rows: 98, columns: 1}},')
+#     axis_labels = f"\nyaxis: {{title: {{text: 'ch 1',}}, showticklabels: false, fixedrange: true}},\n"
+#     for i in range(2,99):
+#         axis_labels += f"yaxis{i}: {{title: {{text: 'ch {i}',}}, showticklabels: false, fixedrange: true}},\n"
+#     f.write(axis_labels)
+#     f.write('margin: { l: 25, t: 25, b: 0 , r: 25},showlegend: false,},config);\nPlotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false, responsive: true });\ndata = [{y: [null],name: "Smooth Spikes",mode: "lines",marker: {color: "#4e79a7"},},{y: [null],name: "NDT Rates",mode: "lines",marker: {color: "#e15759"},}];\nlet newLayout = {title: {text:"NDT Rates vs Smoothed Spikes", y:0.5, x:0.025},yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};\nPlotly.react("legend", data, newLayout, { displayModeBar: false, responsive: true });')
 
-print("Done!\n")
+# print("Done!\n")
+
+
+# '''
+#    ╔════════════════════════════════════════════════════════════════════════╗
+#    ║              HELDOUT RATES VS SMTH SPIKES (ALL CHANNELS)               ║
+#    ╚════════════════════════════════════════════════════════════════════════╝
+# '''
+# print('Generating "ho_all_spk_vs_rates.html" and "ho_all_spk_vs_rates.js"...')
+
+# def rates_string(neuron):
+#     array_string = 'y: ['
+#     for i in train_rates[:300,neuron]:
+#         array_string += str(i.item())+','
+#     array_string += '],'
+#     return array_string
+
+# def ss_string(neuron):
+#     array_string = 'y: ['
+#     for i in smth_spikes[:300,neuron]:
+#         array_string += str(i.item())+','
+#     array_string += '],'
+#     return array_string
+
+# with open(f"plots/{name}/ho_all_spk_vs_rates.html", "w") as f:
+#     f.write('<!DOCTYPE html><html lang="en" ><head><meta charset="UTF-8"><title>NDT Heldin Rates</title></head><body><!-- partial:index.partial.html --><div id="legend" style="height: 50px"></div><div style="height:450px; overflow-y: auto"><div id="plot" style="height:2500px"></div></div><div id="xaxis" style="height: 60px"></div><!-- partial --><script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.3.1/plotly.min.js"></script><script  src="./ho_all_spk_vs_rates.js"></script></body></html>')
+
+# with open(f"plots/{name}/ho_all_spk_vs_rates.js", "w") as f:
+#     names = []
+#     for i in range(98, 130):
+#         names.append(f'trace{i+1}')
+#         names.append(f'trace{i+1}r')
+#         str_to_write = f'var trace{i+1} = {{'
+#         str_to_write += ss_string(i)
+#         str_to_write += f"marker: {{color: '#4e79a7'}},name: 'Smoothed Spikes',yaxis: 'y{i-97}',type: 'line',"
+#         if i != 0:
+#             str_to_write += "showlegend: false,"
+#         str_to_write += f'}};\nvar trace{i+1}r = {{'
+#         str_to_write += rates_string(i)
+#         str_to_write += f"marker: {{color: '#e15759'}},name: 'NDT Rates',yaxis: 'y{i-97}',type: 'line',"
+#         if i != 0:
+#             str_to_write += "showlegend: false,"
+#         str_to_write +='};\n'
+#         f.write(str_to_write)
+#     names_str = 'data = ['
+#     for i in names:
+#         names_str += f"{i}, "
+#     names_str += ']'
+#     f.write(names_str+f'\n')
+#     f.write(f'let bottomTraces = [{{ mode: "scatter" }}];\nlet bottomLayout = {{yaxis: {{ tickmode: "array", tickvals: [], fixedrange: true }},xaxis: {{tickmode: "array",tickvals: [0, 33, 66, 100],ticktext: ["0s", "1s", "2s", "3s"],range: [0, 100],domain: [0.0, 1.0],fixedrange: true}},margin: {{ l: 25, t: 0 , r: 40}},}};\nvar config = {{responsive: true, displayModeBar: false}};\nPlotly.react("plot",data,{{xaxis: {{visible: false, fixedrange: true}},grid: {{rows: 32, columns: 1}},')
+#     axis_labels = f"\nyaxis: {{title: {{text: 'ch 99',}}, showticklabels: false, fixedrange: true}},\n"
+#     for i in range(100,131):
+#         axis_labels += f"yaxis{i-98}: {{title: {{text: 'ch {i}',}}, showticklabels: false, fixedrange: true}},\n"
+#     f.write(axis_labels)
+#     f.write('margin: { l: 25, t: 25, b: 0 , r: 25},showlegend: false,},config);\nPlotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false, responsive: true });\ndata = [{y: [null],name: "Smooth Spikes",mode: "lines",marker: {color: "#4e79a7"},},{y: [null],name: "NDT Rates",mode: "lines",marker: {color: "#e15759"},}];\nlet newLayout = {title: {text:"NDT Rates vs Smoothed Spikes", y:0.5, x:0.025},yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};\nPlotly.react("legend", data, newLayout, { displayModeBar: false, responsive: true });')
+
+# print("Done!\n")
 
 
 '''
@@ -453,7 +453,7 @@ rates = np.exp(output)
 
 gscv = GridSearchCV(Ridge(), {'alpha': np.logspace(-4, 0, 9)})
 gscv.fit(rates, vel)
-print(f'╔═══════════════════════════╗\n║ NDT Rates Decoding:       ║\n║   {{gscv.best_score_}:.3f} R\u00b2                ║\n╚═══════════════════════════╝')
+print(f'╔═══════════════════════════╗\n║ NDT Rates Decoding:       ║\n║   {gscv.best_score_:.3f} R\u00b2                ║\n╚═══════════════════════════╝')
 pred_vel = gscv.predict(rates)
 
 pred_vel_df = pd.DataFrame(pred_vel, index=vel_index, columns=pd.MultiIndex.from_tuples([('pred_vel', 'x'), ('pred_vel', 'y')]))
@@ -504,173 +504,173 @@ pca_df = pd.DataFrame(pca_comps, index=vel_index, columns=pd.MultiIndex.from_tup
 dataset.data = pd.concat([dataset.data, pca_df], axis=1)
 
 
-'''
-   ╔════════════════════════════════════════════════════════════════════════╗
-   ║                   PREDICTED MOVEMENT (TRIAL SLIDER)                    ║
-   ╚════════════════════════════════════════════════════════════════════════╝
-'''
-print('\nGenerating "true_vs_pred_movement.html"...')
+# '''
+#    ╔════════════════════════════════════════════════════════════════════════╗
+#    ║                   PREDICTED MOVEMENT (TRIAL SLIDER)                    ║
+#    ╚════════════════════════════════════════════════════════════════════════╝
+# '''
+# print('\nGenerating "true_vs_pred_movement.html"...')
 
 trial_data = dataset.make_trial_data(align_field='speed_onset', align_range=(-290, 750), allow_nans=True)
 
-fig = go.Figure()
+# fig = go.Figure()
 
-for tid, trial in trial_data.groupby('trial_id'):
-    fig.add_trace(
-        go.Scatter(
-            visible=False,
-            line=dict(color="#e15759"),
-            x=np.cumsum(trial.pred_vel.to_numpy()[29:, 0]/100), 
-            y=np.cumsum(trial.pred_vel.to_numpy()[29:, 1]/100), 
-            name="NDT Predicted Reach",
-        ),
-    )
-    fig.add_trace(
-        go.Scatter(
-            visible=False,
-            line=dict(color="#4e79a7"),
-            x=np.cumsum(trial.smth_pred_vel.to_numpy()[29:, 0]/100), 
-            y=np.cumsum(trial.smth_pred_vel.to_numpy()[29:, 1]/100), 
-            name="Smooth Spikes Predicted Reach",
-        ),
-    )
-    fig.add_trace(
-        go.Scatter(
-            visible=False,
-            line=dict(color="#000000"),
-            x=np.cumsum(trial.finger_vel.to_numpy()[29:, 0]/100), 
-            y=np.cumsum(trial.finger_vel.to_numpy()[29:, 1]/100), 
-            name="True Reach",
-        ),
-    )
+# for tid, trial in trial_data.groupby('trial_id'):
+#     fig.add_trace(
+#         go.Scatter(
+#             visible=False,
+#             line=dict(color="#e15759"),
+#             x=np.cumsum(trial.pred_vel.to_numpy()[29:, 0]/100), 
+#             y=np.cumsum(trial.pred_vel.to_numpy()[29:, 1]/100), 
+#             name="NDT Predicted Reach",
+#         ),
+#     )
+#     fig.add_trace(
+#         go.Scatter(
+#             visible=False,
+#             line=dict(color="#4e79a7"),
+#             x=np.cumsum(trial.smth_pred_vel.to_numpy()[29:, 0]/100), 
+#             y=np.cumsum(trial.smth_pred_vel.to_numpy()[29:, 1]/100), 
+#             name="Smooth Spikes Predicted Reach",
+#         ),
+#     )
+#     fig.add_trace(
+#         go.Scatter(
+#             visible=False,
+#             line=dict(color="#000000"),
+#             x=np.cumsum(trial.finger_vel.to_numpy()[29:, 0]/100), 
+#             y=np.cumsum(trial.finger_vel.to_numpy()[29:, 1]/100), 
+#             name="True Reach",
+#         ),
+#     )
 
-ranges = []
-for tid, trial in trial_data.groupby('trial_id'):
-    min_x = min(
-        min(np.cumsum(trial.pred_vel.to_numpy()[29:, 0]/100)), 
-        min(np.cumsum(trial.smth_pred_vel.to_numpy()[29:, 0]/100)), 
-        min(np.cumsum(trial.finger_vel.to_numpy()[29:, 0]/100))
-    )
-    min_y = min(
-        min(np.cumsum(trial.pred_vel.to_numpy()[29:, 1]/100)), 
-        min(np.cumsum(trial.smth_pred_vel.to_numpy()[29:, 1]/100)), 
-        min(np.cumsum(trial.finger_vel.to_numpy()[29:, 1]/100))
-    )
-    max_x = max(
-        max(np.cumsum(trial.pred_vel.to_numpy()[29:, 0]/100)), 
-        max(np.cumsum(trial.smth_pred_vel.to_numpy()[29:, 0]/100)), 
-        max(np.cumsum(trial.finger_vel.to_numpy()[29:, 0]/100))
-    )
-    max_y = max(
-        max(np.cumsum(trial.pred_vel.to_numpy()[29:, 1]/100)), 
-        max(np.cumsum(trial.smth_pred_vel.to_numpy()[29:, 1]/100)), 
-        max(np.cumsum(trial.finger_vel.to_numpy()[29:, 1]/100))
-    )
-    pad = 0.05
-    x_len = (max_x - min_x) * pad
-    y_len = (max_y - min_y) * pad
-    ranges.append(([
-        min_x - x_len, 
-        max_x + x_len
-    ], [
-        min_y - y_len, 
-        max_y + y_len
-    ]))
+# ranges = []
+# for tid, trial in trial_data.groupby('trial_id'):
+#     min_x = min(
+#         min(np.cumsum(trial.pred_vel.to_numpy()[29:, 0]/100)), 
+#         min(np.cumsum(trial.smth_pred_vel.to_numpy()[29:, 0]/100)), 
+#         min(np.cumsum(trial.finger_vel.to_numpy()[29:, 0]/100))
+#     )
+#     min_y = min(
+#         min(np.cumsum(trial.pred_vel.to_numpy()[29:, 1]/100)), 
+#         min(np.cumsum(trial.smth_pred_vel.to_numpy()[29:, 1]/100)), 
+#         min(np.cumsum(trial.finger_vel.to_numpy()[29:, 1]/100))
+#     )
+#     max_x = max(
+#         max(np.cumsum(trial.pred_vel.to_numpy()[29:, 0]/100)), 
+#         max(np.cumsum(trial.smth_pred_vel.to_numpy()[29:, 0]/100)), 
+#         max(np.cumsum(trial.finger_vel.to_numpy()[29:, 0]/100))
+#     )
+#     max_y = max(
+#         max(np.cumsum(trial.pred_vel.to_numpy()[29:, 1]/100)), 
+#         max(np.cumsum(trial.smth_pred_vel.to_numpy()[29:, 1]/100)), 
+#         max(np.cumsum(trial.finger_vel.to_numpy()[29:, 1]/100))
+#     )
+#     pad = 0.05
+#     x_len = (max_x - min_x) * pad
+#     y_len = (max_y - min_y) * pad
+#     ranges.append(([
+#         min_x - x_len, 
+#         max_x + x_len
+#     ], [
+#         min_y - y_len, 
+#         max_y + y_len
+#     ]))
 
-fig.data[0].visible = True
-fig.data[1].visible = True
-fig.data[2].visible = True
+# fig.data[0].visible = True
+# fig.data[1].visible = True
+# fig.data[2].visible = True
 
-steps = []
-for i in range(int(len(fig.data)/3)):
-    step = dict(
-        method="update",
-        args=[{"visible": [False] * len(fig.data)},
-            #   {"title": "Slider switched to step: " + str(i), 
-              {"xaxis" : dict(
-                range=ranges[i][0], 
-                tickmode = 'linear',
-                tick0=0,
-                dtick=10, 
-                zeroline=True, 
-                zerolinewidth=2, 
-                zerolinecolor='slategray',
-                title="Horizontal Movement Distance (mm)", 
-                fixedrange=True 
-              ),
-              "yaxis" : dict(
-                scaleanchor = "x", 
-                scaleratio = 1, 
-                range=ranges[i][1], 
-                zeroline=True, 
-                zerolinewidth=2, 
-                zerolinecolor='slategray',
-                tickmode = 'linear',
-                tick0=0,
-                dtick=10,
-                title="Vertical Movement Distance (mm)", 
-                fixedrange=True 
-              )}],
-        label=f'{i}'
-    )
-    step["args"][0]["visible"][i*3] = True  # Toggle i'th trace to "visible"
-    step["args"][0]["visible"][i*3+1] = True  # Toggle i'th trace to "visible"
-    step["args"][0]["visible"][i*3+2] = True  # Toggle i'th trace to "visible"
-    steps.append(step)
+# steps = []
+# for i in range(int(len(fig.data)/3)):
+#     step = dict(
+#         method="update",
+#         args=[{"visible": [False] * len(fig.data)},
+#             #   {"title": "Slider switched to step: " + str(i), 
+#               {"xaxis" : dict(
+#                 range=ranges[i][0], 
+#                 tickmode = 'linear',
+#                 tick0=0,
+#                 dtick=10, 
+#                 zeroline=True, 
+#                 zerolinewidth=2, 
+#                 zerolinecolor='slategray',
+#                 title="Horizontal Movement Distance (mm)", 
+#                 fixedrange=True 
+#               ),
+#               "yaxis" : dict(
+#                 scaleanchor = "x", 
+#                 scaleratio = 1, 
+#                 range=ranges[i][1], 
+#                 zeroline=True, 
+#                 zerolinewidth=2, 
+#                 zerolinecolor='slategray',
+#                 tickmode = 'linear',
+#                 tick0=0,
+#                 dtick=10,
+#                 title="Vertical Movement Distance (mm)", 
+#                 fixedrange=True 
+#               )}],
+#         label=f'{i}'
+#     )
+#     step["args"][0]["visible"][i*3] = True  # Toggle i'th trace to "visible"
+#     step["args"][0]["visible"][i*3+1] = True  # Toggle i'th trace to "visible"
+#     step["args"][0]["visible"][i*3+2] = True  # Toggle i'th trace to "visible"
+#     steps.append(step)
 
-sliders = [dict(
-    active=0,
-    currentvalue={"prefix": "Trial: "},
-    pad={"t": 50},
-    steps=steps
-)]
+# sliders = [dict(
+#     active=0,
+#     currentvalue={"prefix": "Trial: "},
+#     pad={"t": 50},
+#     steps=steps
+# )]
 
-fig.update_layout(
-    sliders=sliders,
-    legend=dict(
-        yanchor="bottom",
-        y=1.035,
-        xanchor="right",
-        x=1.00
-    ),
-    xaxis_title="Horizontal Movement Distance (mm)",
-    yaxis_title="Vertical Movement Distance (mm)",
-    title="True vs Predicted Movements",
-)
+# fig.update_layout(
+#     sliders=sliders,
+#     legend=dict(
+#         yanchor="bottom",
+#         y=1.035,
+#         xanchor="right",
+#         x=1.00
+#     ),
+#     xaxis_title="Horizontal Movement Distance (mm)",
+#     yaxis_title="Vertical Movement Distance (mm)",
+#     title="True vs Predicted Movements",
+# )
 
-fig.update_xaxes(
-    range=ranges[0][0], 
-    tickmode = 'linear',
-    tick0=0,
-    dtick=10, 
-    zeroline=True, 
-    zerolinewidth=2, 
-    zerolinecolor='slategray', 
-    fixedrange=True
-)
-fig.update_yaxes(
-    scaleanchor = "x", 
-    scaleratio = 1, 
-    range=ranges[0][1], 
-    zeroline=True, 
-    zerolinewidth=2, 
-    zerolinecolor='slategray',
-    tickmode = 'linear',
-    tick0=0,
-    dtick=10, 
-    fixedrange=True
-)
-layout = go.Layout(
-    margin=go.layout.Margin(
-        l=65, #left margin
-        r=25, #right margin
-        b=135, #bottom margin
-        t=0  #top margin
-    )
-)
-fig.update_layout(layout)
-config = {'displayModeBar': False}
-fig.write_html(f"plots/{name}/true_vs_pred_movement.html", config=config)
+# fig.update_xaxes(
+#     range=ranges[0][0], 
+#     tickmode = 'linear',
+#     tick0=0,
+#     dtick=10, 
+#     zeroline=True, 
+#     zerolinewidth=2, 
+#     zerolinecolor='slategray', 
+#     fixedrange=True
+# )
+# fig.update_yaxes(
+#     scaleanchor = "x", 
+#     scaleratio = 1, 
+#     range=ranges[0][1], 
+#     zeroline=True, 
+#     zerolinewidth=2, 
+#     zerolinecolor='slategray',
+#     tickmode = 'linear',
+#     tick0=0,
+#     dtick=10, 
+#     fixedrange=True
+# )
+# layout = go.Layout(
+#     margin=go.layout.Margin(
+#         l=65, #left margin
+#         r=25, #right margin
+#         b=135, #bottom margin
+#         t=0  #top margin
+#     )
+# )
+# fig.update_layout(layout)
+# config = {'displayModeBar': False}
+# fig.write_html(f"plots/{name}/true_vs_pred_movement.html", config=config)
 
 print("Done!\n")
 
@@ -682,7 +682,63 @@ print("Done!\n")
 '''
 print('Generating "rates_pca.html"...')
 
+norm = colors.Normalize(vmin=-180, vmax=180, clip=True)
+mapper = cm.ScalarMappable(norm=norm, cmap='hsv')
+mapper.set_array([])
 
+fig = go.Figure()
+
+for tid, trial in trial_data.groupby('trial_id'):
+    angle = dataset.trial_info[dataset.trial_info.trial_id == tid].reach_angle
+    fig.add_trace(
+        go.Scatter3d(
+            x=trial.pca.x, 
+            y=trial.pca.y, 
+            z=trial.pca.z,
+            mode='lines',
+            line=dict(color=f'{colors.rgb2hex(mapper.to_rgba(angle))}')
+        )
+    )
+
+fig.update_layout(
+    width=1000,
+    height=700,
+    autosize=False,
+    showlegend=False,
+    title="PCA of NDT Rates",
+    scene=dict(
+        xaxis_showspikes=False,
+        yaxis_showspikes=False,
+        zaxis_showspikes=False,
+        xaxis_title="PC1",
+        yaxis_title="PC2",
+        zaxis_title="PC3",
+        camera=dict(
+            center=dict(
+                x=0.0,
+                y=0.0,
+                z=-0.125,
+            ),
+        ),
+        aspectratio = dict( x=1, y=1, z=1 ),
+        aspectmode = 'manual'
+    ),
+)
+
+fig.add_layout_image(
+    dict(
+        source="https://domenick-m.github.io/NDT-Timing-Test/plots/color_wheel.png",
+        xref="paper", yref="paper",
+        x=1.085, y=0.01,
+        sizex=0.35, sizey=0.35,
+        xanchor="right", yanchor="bottom"
+    )
+)
+
+fig.update_layout(margin=dict(r=90, l=0, b=10, t=60))
+
+config = {'displayModeBar': False}
+fig.write_html(f"plots/{name}/rates_pca.html", config=config)
 
 print("Done!\n")
 
@@ -696,7 +752,7 @@ print('Generating "smth_pca.html"...')
 
 
 
-print("Done!")
+print("Done!\n")
 
 test = 0.0 / 0.0
 
