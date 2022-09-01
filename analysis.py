@@ -279,14 +279,14 @@ print('Generating "hi_all_spk_vs_rates.html" & "hi_all_spk_vs_rates.js"...')
 
 def rates_string(neuron):
     array_string = 'y: ['
-    for i in train_rates[:300,neuron]:
+    for i in train_rates[:1000,neuron]:
         array_string += str(i.item())+','
     array_string += '],'
     return array_string
 
 def ss_string(neuron):
     array_string = 'y: ['
-    for i in smth_spikes[:300,neuron]:
+    for i in smth_spikes[:1000,neuron]:
         array_string += str(i.item())+','
     array_string += '],'
     return array_string
@@ -316,7 +316,7 @@ with open(f"plots/{name}/hi_all_spk_vs_rates.js", "w") as f:
         names_str += f"{i}, "
     names_str += ']'
     f.write(names_str+f'\n')
-    f.write(f'let bottomTraces = [{{ mode: "scatter" }}];\nlet bottomLayout = {{yaxis: {{ tickmode: "array", tickvals: [], fixedrange: true }},xaxis: {{tickmode: "array",tickvals: [0, 33, 66, 100],ticktext: ["0s", "1s", "2s", "3s"],range: [0, 100],domain: [0.0, 1.0],fixedrange: true}},margin: {{ l: 25, t: 0 , r: 40}},}};\nvar config = {{responsive: true, displayModeBar: false}};\nPlotly.react("plot",data,{{xaxis: {{visible: false, fixedrange: true}},grid: {{rows: 98, columns: 1}},')
+    f.write(f'let bottomTraces = [{{ mode: "scatter" }}];\nlet bottomLayout = {{yaxis: {{ tickmode: "array", tickvals: [], fixedrange: true }},xaxis: {{tickmode: "array",tickvals: [0, 25, 50, 75, 100],ticktext: ["0s", "2.5s", "5s", "7.5s", "10s"],range: [0, 100],domain: [0.0, 1.0],fixedrange: true}},margin: {{ l: 25, t: 0 , r: 40}},}};\nvar config = {{responsive: true, displayModeBar: false}};\nPlotly.react("plot",data,{{xaxis: {{visible: false, fixedrange: true}},grid: {{rows: 98, columns: 1}},')
     axis_labels = f"\nyaxis: {{title: {{text: 'ch 1',}}, showticklabels: false, fixedrange: true}},\n"
     for i in range(2,99):
         axis_labels += f"yaxis{i}: {{title: {{text: 'ch {i}',}}, showticklabels: false, fixedrange: true}},\n"
@@ -335,14 +335,14 @@ print('Generating "ho_all_spk_vs_rates.html" and "ho_all_spk_vs_rates.js"...')
 
 def rates_string(neuron):
     array_string = 'y: ['
-    for i in train_rates[:300,neuron]:
+    for i in train_rates[:1000,neuron]:
         array_string += str(i.item())+','
     array_string += '],'
     return array_string
 
 def ss_string(neuron):
     array_string = 'y: ['
-    for i in smth_spikes[:300,neuron]:
+    for i in smth_spikes[:1000,neuron]:
         array_string += str(i.item())+','
     array_string += '],'
     return array_string
@@ -372,7 +372,7 @@ with open(f"plots/{name}/ho_all_spk_vs_rates.js", "w") as f:
         names_str += f"{i}, "
     names_str += ']'
     f.write(names_str+f'\n')
-    f.write(f'let bottomTraces = [{{ mode: "scatter" }}];\nlet bottomLayout = {{yaxis: {{ tickmode: "array", tickvals: [], fixedrange: true }},xaxis: {{tickmode: "array",tickvals: [0, 33, 66, 100],ticktext: ["0s", "1s", "2s", "3s"],range: [0, 100],domain: [0.0, 1.0],fixedrange: true}},margin: {{ l: 25, t: 0 , r: 40}},}};\nvar config = {{responsive: true, displayModeBar: false}};\nPlotly.react("plot",data,{{xaxis: {{visible: false, fixedrange: true}},grid: {{rows: 32, columns: 1}},')
+    f.write(f'let bottomTraces = [{{ mode: "scatter" }}];\nlet bottomLayout = {{yaxis: {{ tickmode: "array", tickvals: [], fixedrange: true }},xaxis: {{tickmode: "array",tickvals: [0, 25, 50, 75, 100],ticktext: ["0s", "2.5s", "5s", "7.5s", "10s"],range: [0, 100],domain: [0.0, 1.0],fixedrange: true}},margin: {{ l: 25, t: 0 , r: 40}},}};\nvar config = {{responsive: true, displayModeBar: false}};\nPlotly.react("plot",data,{{xaxis: {{visible: false, fixedrange: true}},grid: {{rows: 32, columns: 1}},')
     axis_labels = f"\nyaxis: {{title: {{text: 'ch 99',}}, showticklabels: false, fixedrange: true}},\n"
     for i in range(100,131):
         axis_labels += f"yaxis{i-98}: {{title: {{text: 'ch {i}',}}, showticklabels: false, fixedrange: true}},\n"
