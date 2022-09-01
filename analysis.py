@@ -348,7 +348,7 @@ def ss_string(neuron):
     return array_string
 
 with open(f"plots/{name}/ho_all_spk_vs_rates.html", "w") as f:
-    f.write('<!DOCTYPE html><html lang="en" ><head><meta charset="UTF-8"><title>NDT Heldin Rates</title></head><body><!-- partial:index.partial.html --><div id="legend" style="height: 50px"></div><div style="height:450px; overflow-y: auto"><div id="plot" style="height:2500px"></div></div><div id="xaxis" style="height: 60px"></div><!-- partial --><script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.3.1/plotly.min.js"></script><script  src="./ho_all_spk_vs_rates.js"></script></body></html>')
+    f.write('<!DOCTYPE html><html lang="en" ><head><meta charset="UTF-8"><title>NDT Heldout Rates</title></head><body><!-- partial:index.partial.html --><div id="legend" style="height: 50px"></div><div style="height:450px; overflow-y: auto"><div id="plot" style="height:2500px"></div></div><div id="xaxis" style="height: 60px"></div><!-- partial --><script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.3.1/plotly.min.js"></script><script  src="./ho_all_spk_vs_rates.js"></script></body></html>')
 
 with open(f"plots/{name}/ho_all_spk_vs_rates.js", "w") as f:
     names = []
