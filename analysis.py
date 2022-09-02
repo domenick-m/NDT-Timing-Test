@@ -2,6 +2,8 @@ import os
 import sys
 import h5py
 import torch
+import shutil
+import warnings
 import fileinput
 import numpy as np
 import pandas as pd
@@ -9,12 +11,18 @@ from matplotlib import cm, colors
 import plotly.graph_objects as go
 from sklearn.decomposition import PCA
 from sklearn.linear_model import Ridge
+from scipy.linalg import LinAlgWarning
 from setup import set_device, set_seeds
 from create_local_data import make_test_data
 from nlb_tools.make_tensors import h5_to_dict
 from nlb_tools.nwb_interface import NWBDataset
+from nlb_tools.evaluation import bits_per_spike
 from sklearn.model_selection import GridSearchCV
 from configs.default_config import get_config_from_file
+
+warnings.filterwarnings(action='ignore', category=LinAlgWarning, module='sklearn')
+
+#   context_backward, context_forward, dropout, dropout_attention, dropout_embedding, dropout_rates, hidden_size, initrange, loss_ratio, mask_ratio, n_heads, n_layers, random_ratio, undivided_attn, batch_size, epochs, init_lr, mask_max_span, normal_init, optimizer, ramp_end, ramp_start, warmup_steps, weight_decay
 
 
 '''
@@ -36,6 +44,7 @@ if len(sys.argv) == 1 or len(sys.argv) > 2:
 path = sys.argv[1]
 name = path[:path.rindex('/')].split('/')[-1]
 config = get_config_from_file(path[:path.rindex('/')+1]+'config.yaml')
+shutil.copyfile(path[:path.rindex('/')+1]+'config.yaml', f"plots/{name}/config.yaml")
 
 set_device(config)
 device = torch.device('cuda:0')
@@ -89,13 +98,14 @@ print('Done!\n')
 
 '''
    ╔════════════════════════════════════════════════════════════════════════╗
-   ║               HELDIN RATES VS SMTH SPIKES (RANGE SLIDER)               ║
+   ║                           TEST SET INFERENCE                           ║
    ╚════════════════════════════════════════════════════════════════════════╝
 '''
-print('Generating "hi_indv_spk_vs_rates.html"...')
+print('Running inference on the test set...')
 
 with torch.no_grad():
     train_rates = []
+    test_ho_spikes = []
     for spikes, heldout_spikes in zip(
         torch.Tensor(h5dict['test_spikes_heldin']).to(device), torch.Tensor(h5dict['test_spikes_heldout']).to(device)
     ):
@@ -103,12 +113,41 @@ with torch.no_grad():
         spikes_new = torch.cat([spikes, ho_spikes], -1).to(device)
         output = model(spikes_new.unsqueeze(dim=0))[:, -1, :]
         train_rates.append(output.cpu())
+        test_ho_spikes.append(heldout_spikes.unsqueeze(dim=0)[:, -1, :].cpu())
 
 train_rates = torch.cat(train_rates, dim=0).exp() # turn into tensor and use exponential on rates
+test_ho_spikes = torch.cat(test_ho_spikes, dim=0) # turn into tensor and use exponential on rates
+
+co_bps = float(bits_per_spike(train_rates[:, 98:].unsqueeze(dim=0).numpy(), test_ho_spikes.unsqueeze(dim=0).numpy()))
+print(f'\n╔═══════════════════════════╗\n║ NDT Test Set Co-bps:      ║\n║   {co_bps:.3f}                   ║\n╚═══════════════════════════╝\n')
+with open(f"plots/{name}/test_co_bps.txt", 'w') as f:
+    f.write(f'╔═══════════════════════════╗\n║ NDT Test Set Co-bps:      ║\n║   {co_bps:.3f}                   ║\n╚═══════════════════════════╝')
+
+gscv = GridSearchCV(Ridge(), {'alpha': np.logspace(-4, 0, 9)})
+gscv.fit(train_rates.numpy(), h5dict['test_vel_segments'])
+print(f'╔═══════════════════════════╗\n║ NDT Test Set Decoding:    ║\n║   {gscv.best_score_:.3f} R\u00b2                ║\n╚═══════════════════════════╝')
+with open(f"plots/{name}/velocity_decoding.txt", 'w') as f:
+    f.write(f'╔═══════════════════════════╗\n║ NDT Test Set Decoding:    ║\n║   {gscv.best_score_:.3f} R\u00b2                ║\n╚═══════════════════════════╝')
 
 smth_spikes = torch.Tensor(h5dict['test_hi_smth_spikes'])
 heldout_smth_spikes = torch.Tensor(h5dict['test_ho_smth_spikes'])
 smth_spikes = torch.cat([smth_spikes, heldout_smth_spikes], -1)
+
+gscv = GridSearchCV(Ridge(), {'alpha': np.logspace(-4, 0, 9)})
+gscv.fit(smth_spikes.numpy(), h5dict['test_vel_segments'])
+print(f'\n╔════════════════════════════════════╗\n║ Smoothed Spikes Test Set Decoding: ║\n║   {gscv.best_score_:.3f} R\u00b2                         ║\n╚════════════════════════════════════╝\n')
+with open(f"plots/{name}/velocity_decoding.txt", 'a') as f:
+    f.write(f'\n\n╔════════════════════════════════════╗\n║ Smoothed Spikes Test Set Decoding: ║\n║   {gscv.best_score_:.3f} R\u00b2                         ║\n╚════════════════════════════════════╝')
+
+print('Done!\n')
+
+
+'''
+   ╔════════════════════════════════════════════════════════════════════════╗
+   ║               HELDIN RATES VS SMTH SPIKES (RANGE SLIDER)               ║
+   ╚════════════════════════════════════════════════════════════════════════╝
+'''
+print('Generating "hi_indv_spk_vs_rates.html"...')
 
 fig = go.Figure()
 x_range=2500
@@ -177,7 +216,7 @@ fig.update_layout(
     ),
     # xaxis_title="Time",
     yaxis_title="Spikes per Window",
-    title="NDT Rates vs Smoothed Spikes",
+    title="NDT Rates vs Smoothed Spikes - Heldin Channels",
 )
 
 if not os.path.isdir(f"plots/{name}"): os.makedirs(f"plots/{name}")
@@ -261,7 +300,7 @@ fig.update_layout(
     ),
     # xaxis_title="Time",
     yaxis_title="Spikes per Window",
-    title="NDT Rates vs Smoothed Spikes",
+    title="NDT Rates vs Smoothed Spikes - Heldout Channels",
 )
 
 config = {'displayModeBar': False}
@@ -321,7 +360,7 @@ with open(f"plots/{name}/hi_all_spk_vs_rates.js", "w") as f:
     for i in range(2,99):
         axis_labels += f"yaxis{i}: {{title: {{text: 'ch {i}',}}, showticklabels: false, fixedrange: true}},\n"
     f.write(axis_labels)
-    f.write('margin: { l: 25, t: 25, b: 0 , r: 25},showlegend: false,},config);\nPlotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false, responsive: true });\ndata = [{y: [null],name: "Smooth Spikes",mode: "lines",marker: {color: "#4e79a7"},},{y: [null],name: "NDT Rates",mode: "lines",marker: {color: "#e15759"},}];\nlet newLayout = {title: {text:"NDT Rates vs Smoothed Spikes", y:0.5, x:0.025},yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};\nPlotly.react("legend", data, newLayout, { displayModeBar: false, responsive: true });')
+    f.write('margin: { l: 25, t: 25, b: 0 , r: 25},showlegend: false,},config);\nPlotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false, responsive: true });\ndata = [{y: [null],name: "Smooth Spikes",mode: "lines",marker: {color: "#4e79a7"},},{y: [null],name: "NDT Rates",mode: "lines",marker: {color: "#e15759"},}];\nlet newLayout = {title: {text:"NDT Rates vs Smoothed Spikes - Heldin Channels (All)", y:0.5, x:0.025},yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};\nPlotly.react("legend", data, newLayout, { displayModeBar: false, responsive: true });')
 
 print("Done!\n")
 
@@ -377,7 +416,7 @@ with open(f"plots/{name}/ho_all_spk_vs_rates.js", "w") as f:
     for i in range(100,131):
         axis_labels += f"yaxis{i-98}: {{title: {{text: 'ch {i}',}}, showticklabels: false, fixedrange: true}},\n"
     f.write(axis_labels)
-    f.write('margin: { l: 25, t: 25, b: 0 , r: 25},showlegend: false,},config);\nPlotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false, responsive: true });\ndata = [{y: [null],name: "Smooth Spikes",mode: "lines",marker: {color: "#4e79a7"},},{y: [null],name: "NDT Rates",mode: "lines",marker: {color: "#e15759"},}];\nlet newLayout = {title: {text:"NDT Rates vs Smoothed Spikes", y:0.5, x:0.025},yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};\nPlotly.react("legend", data, newLayout, { displayModeBar: false, responsive: true });')
+    f.write('margin: { l: 25, t: 25, b: 0 , r: 25},showlegend: false,},config);\nPlotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false, responsive: true });\ndata = [{y: [null],name: "Smooth Spikes",mode: "lines",marker: {color: "#4e79a7"},},{y: [null],name: "NDT Rates",mode: "lines",marker: {color: "#e15759"},}];\nlet newLayout = {title: {text:"NDT Rates vs Smoothed Spikes - Heldout Channels (All)", y:0.5, x:0.025},yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};\nPlotly.react("legend", data, newLayout, { displayModeBar: false, responsive: true });')
 
 print("Done!\n")
 
@@ -447,7 +486,9 @@ rates = np.exp(output)
 
 gscv = GridSearchCV(Ridge(), {'alpha': np.logspace(-4, 0, 9)})
 gscv.fit(rates, vel)
-print(f'╔═══════════════════════════╗\n║ NDT Rates Decoding:       ║\n║   {gscv.best_score_:.3f} R\u00b2                ║\n╚═══════════════════════════╝')
+print(f'\n╔══════════════════════════════╗\n║ NDT Filered Trials Decoding: ║\n║   {gscv.best_score_:.3f} R\u00b2                   ║\n╚══════════════════════════════╝')
+with open(f"plots/{name}/velocity_decoding.txt", 'a') as f:
+    f.write(f'\n\n╔══════════════════════════════╗\n║ NDT Filered Trials Decoding: ║\n║   {gscv.best_score_:.3f} R\u00b2                   ║\n╚══════════════════════════════╝')
 pred_vel = gscv.predict(rates)
 
 pred_vel_df = pd.DataFrame(pred_vel, index=vel_index, columns=pd.MultiIndex.from_tuples([('pred_vel', 'x'), ('pred_vel', 'y')]))
@@ -478,7 +519,10 @@ rates = dataset.data.spikes_smth_50[~nans.to_numpy() & ~nans.shift(-lag_bins, fi
 
 gscv = GridSearchCV(Ridge(), {'alpha': np.logspace(-4, 0, 9)})
 gscv.fit(rates, vel)
-print(f'╔═══════════════════════════╗\n║ Smoothed Spikes Decoding: ║\n║   {gscv.best_score_:.3f} R\u00b2                ║\n╚═══════════════════════════╝')
+print(f'\n╔═══════════════════════════════════════════╗\n║ Smoothed Spikes Filtered Trials Decoding: ║\n║   {gscv.best_score_:.3f} R\u00b2                                ║\n╚═══════════════════════════════════════════╝\n')
+with open(f"plots/{name}/velocity_decoding.txt", 'a') as f:
+    f.write(f'\n\n╔═══════════════════════════════════════════╗\n║ Smoothed Spikes Filtered Trials Decoding: ║\n║   {gscv.best_score_:.3f} R\u00b2                                ║\n╚═══════════════════════════════════════════╝')
+
 smth_pred_vel = gscv.predict(rates)
 
 smth_pred_vel_df = pd.DataFrame(smth_pred_vel, index=vel_index, columns=pd.MultiIndex.from_tuples([('smth_pred_vel', 'x'), ('smth_pred_vel', 'y')]))

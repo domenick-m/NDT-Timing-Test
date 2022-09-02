@@ -102,5 +102,5 @@ yaxis32: {title: {text: 'ch 130',}, showticklabels: false, fixedrange: true},
 margin: { l: 25, t: 25, b: 0 , r: 25},showlegend: false,},config);
 Plotly.react("xaxis", bottomTraces, bottomLayout, { displayModeBar: false, responsive: true });
 data = [{y: [null],name: "Smooth Spikes",mode: "lines",marker: {color: "#4e79a7"},},{y: [null],name: "NDT Rates",mode: "lines",marker: {color: "#e15759"},}];
-let newLayout = {title: {text:"NDT Rates vs Smoothed Spikes", y:0.5, x:0.025},yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};
+let newLayout = {title: {text:"NDT Rates vs Smoothed Spikes - Heldout Channels (All)", y:0.5, x:0.025},yaxis: { visible: false},xaxis: { visible: false},margin: { l: 0, t: 0, b: 0, r: 0 },showlegend: true,};
 Plotly.react("legend", data, newLayout, { displayModeBar: false, responsive: true });
