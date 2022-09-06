@@ -1,0 +1,12 @@
+wandb URL: https://wandb.ai/domenick-m/mc_rtt_cont/runs/3jvpst43
+amber-pine-3                          --                GPU:0                 --                                            n_parameters: 792,410
+                                                                                                                                                 Traceback (most recent call last):
+  File "train.py", line 416, in <module>
+    main()/ 10                                                                                                                         0% - ETR:?
+  File "train.py", line 77, in main
+    run_single(config, device, model_name)
+  File "train.py", line 112, in run_single
+    train(model, train_dataloader, val_dataloader, device)
+  File "train.py", line 238, in train
+    for step, (spikes, heldout_spikes, forward_spikes) in enumerate(train_dataloader):
+ValueError: not enough values to unpack (expected 3, got 2)

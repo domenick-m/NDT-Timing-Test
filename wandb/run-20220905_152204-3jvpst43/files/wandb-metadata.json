@@ -1,0 +1,28 @@
+{
+    "os": "Linux-5.13.0-51-generic-x86_64-with-glibc2.10",
+    "python": "3.8.5",
+    "heartbeatAt": "2022-09-05T19:22:05.065727",
+    "startedAt": "2022-09-05T19:22:04.130878",
+    "docker": null,
+    "gpu": "NVIDIA A40",
+    "gpu_count": 6,
+    "cpu_count": 128,
+    "cuda": null,
+    "args": [
+        "--epochs",
+        "10",
+        "-y"
+    ],
+    "state": "running",
+    "program": "train.py",
+    "codePath": "train.py",
+    "git": {
+        "remote": "https://github.com/domenick-m/NDT-Timing-Test/",
+        "commit": "4d315824efb9d3e0fd20b6b38054df432a39a5f5"
+    },
+    "email": "dmifsud4@gmail.com",
+    "root": "/home/dmifsud/Projects/NDT-Timing-Test",
+    "host": "gpu2",
+    "username": "dmifsud",
+    "executable": "/home/dmifsud/miniconda3/envs/ndtu/bin/python"
+}

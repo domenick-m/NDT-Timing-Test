@@ -70,6 +70,7 @@ config.train.ramp_end = 10000 # Epoch when the number of timesteps being maksed 
 config.model = CN()
 config.model.n_heads = 2 # The number of heads used in UndividedMultiheadAttention
 config.model.n_layers = 4 # The number of EncoderLayers the Encoder should have
+config.model.mask_max_span = 6 # The max number of timesteps that can be masked in a row
 config.model.hidden_size = 128 # The size of the linear layers in each EncoderLayer
 
 config.model.emb_size = 0
@@ -139,7 +140,7 @@ config.wandb.sweep.train.normal_init = [True, False]
 config.wandb.sweep.train.warmup_steps = [1, 50, 100, 250, 500, 1000, 2000, 5000, 10000, 50000, 100000, 1000000]
 config.wandb.sweep.train.init_lr = [0.01, 0.001, 0.005, 0.0005, 0.0005, 0.00005, 0.000005]
 config.wandb.sweep.train.weight_decay = [0.01, 0.001, 0.0001, 0.00001, 0.00005, 0.000001, 0.000005,  0.0000001, 0.00000001]
-# config.wandb.sweep.train.mask_max_span = [1, 2, 3, 4, 5, 6, 7]
+config.wandb.sweep.train.mask_max_span = [1, 2, 3, 4, 5, 6, 7]
 # config.wandb.sweep.train.ramp_start = [100, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000]
 # config.wandb.sweep.train.ramp_end = [8000, 9000, 10000, 11000, 15000, 17000, 18000, 20000]
 config.wandb.sweep.train.ramp_start = [100, 500, 1000, 2000, 3000]

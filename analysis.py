@@ -44,6 +44,7 @@ if len(sys.argv) == 1 or len(sys.argv) > 2:
 path = sys.argv[1]
 name = path[:path.rindex('/')].split('/')[-1]
 config = get_config_from_file(path[:path.rindex('/')+1]+'config.yaml')
+if not os.path.isdir(f"plots/{name}"): os.makedirs(f"plots/{name}")
 shutil.copyfile(path[:path.rindex('/')+1]+'config.yaml', f"plots/{name}/config.yaml")
 
 set_device(config)
@@ -219,7 +220,6 @@ fig.update_layout(
     title="NDT Rates vs Smoothed Spikes - Heldin Channels",
 )
 
-if not os.path.isdir(f"plots/{name}"): os.makedirs(f"plots/{name}")
 config = {'displayModeBar': False}
 fig.write_html(f"plots/{name}/hi_indv_spk_vs_rates.html", config=config)
 

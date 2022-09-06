@@ -1,0 +1,121 @@
+2022-09-05 15:22:04,132 INFO    MainThread:2956056 [wandb_setup.py:_flush():75] Loading settings from /home/dmifsud/.config/wandb/settings
+2022-09-05 15:22:04,132 INFO    MainThread:2956056 [wandb_setup.py:_flush():75] Loading settings from /home/dmifsud/Projects/NDT-Timing-Test/wandb/settings
+2022-09-05 15:22:04,132 INFO    MainThread:2956056 [wandb_setup.py:_flush():75] Loading settings from environment variables: {'silent': 'true'}
+2022-09-05 15:22:04,132 INFO    MainThread:2956056 [wandb_setup.py:_flush():75] Inferring run settings from compute environment: {'program_relpath': 'train.py', 'program': 'train.py'}
+2022-09-05 15:22:04,132 INFO    MainThread:2956056 [wandb_init.py:_log_setup():405] Logging user logs to /home/dmifsud/Projects/NDT-Timing-Test/wandb/run-20220905_152204-3jvpst43/logs/debug.log
+2022-09-05 15:22:04,132 INFO    MainThread:2956056 [wandb_init.py:_log_setup():406] Logging internal logs to /home/dmifsud/Projects/NDT-Timing-Test/wandb/run-20220905_152204-3jvpst43/logs/debug-internal.log
+2022-09-05 15:22:04,132 INFO    MainThread:2956056 [wandb_init.py:init():439] calling init triggers
+2022-09-05 15:22:04,132 INFO    MainThread:2956056 [wandb_init.py:init():442] wandb.init called with sweep_config: {}
+config: {'setup': {'dataset': 'mc_rtt', 'seed': 1, 'subset_seed': 404, 'gpu_idx': -1, 'save_model': True, 'save_min_bps': -1000.0, 'log_eps': 1e-07, 'config_dir': 'configs/', 'data_dir': 'data/', 'runs_dir': 'runs/'}, 'train': {'batch_size': 1024, 'seq_len': 60, 'overlap': 45, 'epochs': 10, 'val_interval': 10, 'val_type': 'original', 'val_ratio': 0.05, 'sweep_enabled': False, 'sweep_type': 'random', 'sweep_epochs': 9999, 'early_stopping': True, 'es_min_bps': 0.1, 'es_chk_pnt': 0.5, 'init_lr': 0.0005, 'optimizer': 'AdamW', 'scheduler': 'Cosine', 'warmup_steps': 4000, 'normal_init': True, 'add_one_random': False, 'max_grad_norm': 200.0, 'weight_decay': 1e-07, 'mask_max_span': 2, 'ramp_start': 4000, 'ramp_end': 9000}, 'model': {'n_heads': 2, 'n_layers': 5, 'mask_max_span': 6, 'hidden_size': 64, 'emb_size': 0, 'dropout': 0.3, 'dropout_rates': 0.6, 'dropout_embedding': 0.4, 'dropout_attention': 0.8, 'loss_ratio': 0.25, 'mask_ratio': 0.75, 'random_ratio': 1.0, 'undivided_attn': True, 'norm': 'layer', 'activation': 'relu', 'max_spike_count': 20, 'xavier': False, 'initrange': 0.01, 'context_forward': 25, 'context_backward': 45}, 'wandb': {'log': True, 'log_freq': 250, 'log_local': False, 'project': 'mc_rtt_cont', 'sweep_name': 'my-sweep', 'silent': 'true', 'alt_wandb_dirs': [(['rock', 'paper', 'scissors'], '/s/*/b/tmp/dmifsud/'), (['mercury', 'venus', 'earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune'], '/s/*/a/tmp/dmifsud/')], 'sweep': {'setup': {'seed': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]}, 'train': {'normal_init': [True, False], 'warmup_steps': [1, 50, 100, 250, 500, 1000, 2000, 5000, 10000, 50000, 100000, 1000000], 'init_lr': [0.01, 0.001, 0.005, 0.0005, 0.0005, 5e-05, 5e-06], 'weight_decay': [0.01, 0.001, 0.0001, 1e-05, 5e-05, 1e-06, 5e-06, 1e-07, 1e-08], 'mask_max_span': [1, 2, 3, 4, 5, 6, 7], 'ramp_start': [100, 500, 1000, 2000, 3000], 'ramp_end': [3500, 4000, 5000, 7500], 'add_one_random': [True, False]}, 'model': {'mask_max_span': [2, 3, 5, 7], 'loss_ratio': [0.25, 0.35, 0.45, 0.55], 'mask_ratio': [0.5, 0.75, 0.9], 'random_ratio': [0.5, 0.7, 0.85, 1.0], 'undivided_attn': [True, False], 'initrange': [0.1, 0.01, 0.005, 0.001, 0.0001], 'context_forward': [3, 5, 7, 12, 25, 35, 45, 60], 'context_backward': [3, 5, 7, 12, 25, 35, 45, 60], 'n_heads': [1, 2, 5], 'n_layers': [1, 2, 3, 4, 5], 'dropout_attention': [0.1, 0.3, 0.4, 0.5, 0.6, 0.7], 'dropout_embedding': [0.1, 0.3, 0.4, 0.5, 0.6, 0.7], 'dropout_rates': [0.1, 0.3, 0.4, 0.5, 0.6, 0.7], 'dropout': [0.1, 0.3, 0.4, 0.5, 0.6, 0.7], 'hidden_size': [64, 128, 256, 512], 'xavier': [True, False]}}}}
+2022-09-05 15:22:04,132 INFO    MainThread:2956056 [wandb_init.py:init():492] starting backend
+2022-09-05 15:22:04,133 INFO    MainThread:2956056 [backend.py:_multiprocessing_setup():99] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2022-09-05 15:22:04,169 INFO    MainThread:2956056 [backend.py:ensure_launched():219] starting backend process...
+2022-09-05 15:22:04,205 INFO    MainThread:2956056 [backend.py:ensure_launched():224] started backend process with pid: 2956188
+2022-09-05 15:22:04,206 INFO    MainThread:2956056 [wandb_init.py:init():501] backend started and connected
+2022-09-05 15:22:04,212 INFO    MainThread:2956056 [wandb_init.py:init():565] updated telemetry
+2022-09-05 15:22:04,296 INFO    MainThread:2956056 [wandb_init.py:init():596] communicating run to backend with 30 second timeout
+2022-09-05 15:22:04,980 INFO    MainThread:2956056 [wandb_run.py:_on_init():1759] communicating current version
+2022-09-05 15:22:05,045 INFO    MainThread:2956056 [wandb_run.py:_on_init():1763] got version response upgrade_message: "wandb version 0.13.2 is available!  To upgrade, please run:\n $ pip install wandb --upgrade"
+
+2022-09-05 15:22:05,045 INFO    MainThread:2956056 [wandb_init.py:init():625] starting run threads in backend
+2022-09-05 15:22:10,053 INFO    MainThread:2956056 [wandb_run.py:_console_start():1733] atexit reg
+2022-09-05 15:22:10,054 INFO    MainThread:2956056 [wandb_run.py:_redirect():1606] redirect: SettingsConsole.REDIRECT
+2022-09-05 15:22:10,054 INFO    MainThread:2956056 [wandb_run.py:_redirect():1611] Redirecting console.
+2022-09-05 15:22:10,057 INFO    MainThread:2956056 [wandb_run.py:_redirect():1667] Redirects installed.
+2022-09-05 15:22:10,057 INFO    MainThread:2956056 [wandb_init.py:init():664] run started, returning control to user process
+2022-09-05 15:22:10,098 INFO    MainThread:2956056 [wandb_watch.py:watch():47] Watching
+2022-09-05 15:22:10,117 INFO    MainThread:2956056 [wandb_run.py:_atexit_cleanup():1702] got exitcode: 1
+2022-09-05 15:22:10,118 INFO    MainThread:2956056 [wandb_run.py:_restore():1674] restore
+2022-09-05 15:22:12,569 INFO    MainThread:2956056 [wandb_run.py:_on_finish():1831] got exit ret: file_counts {
+  wandb_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 785
+  total_bytes: 785
+}
+
+2022-09-05 15:22:12,921 INFO    MainThread:2956056 [wandb_run.py:_on_finish():1831] got exit ret: file_counts {
+  wandb_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 785
+  total_bytes: 785
+}
+
+2022-09-05 15:22:13,038 INFO    MainThread:2956056 [wandb_run.py:_on_finish():1831] got exit ret: file_counts {
+  wandb_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 785
+  total_bytes: 785
+}
+
+2022-09-05 15:22:13,995 INFO    MainThread:2956056 [wandb_run.py:_on_finish():1831] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 785
+  total_bytes: 12856
+}
+
+2022-09-05 15:22:14,107 INFO    MainThread:2956056 [wandb_run.py:_on_finish():1831] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 2645
+  total_bytes: 12856
+}
+
+2022-09-05 15:22:14,209 INFO    MainThread:2956056 [wandb_run.py:_on_finish():1831] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 12856
+  total_bytes: 12856
+}
+
+2022-09-05 15:22:14,310 INFO    MainThread:2956056 [wandb_run.py:_on_finish():1831] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 12856
+  total_bytes: 12856
+}
+
+2022-09-05 15:22:14,412 INFO    MainThread:2956056 [wandb_run.py:_on_finish():1831] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 12856
+  total_bytes: 12856
+}
+
+2022-09-05 15:22:14,514 INFO    MainThread:2956056 [wandb_run.py:_on_finish():1831] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 12856
+  total_bytes: 12856
+}
+
+2022-09-05 15:22:14,667 INFO    MainThread:2956056 [wandb_run.py:_on_finish():1831] got exit ret: file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 12856
+  total_bytes: 12856
+}
+
+2022-09-05 15:22:14,915 INFO    MainThread:2956056 [wandb_run.py:_on_finish():1831] got exit ret: done: true
+exit_result {
+}
+file_counts {
+  wandb_count: 6
+}
+pusher_stats {
+  uploaded_bytes: 12856
+  total_bytes: 12856
+}
+local_info {
+}
+

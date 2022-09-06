@@ -1,0 +1,195 @@
+model:
+  activation: relu
+  context_backward: 7
+  context_forward: 3
+  dropout: 0.4
+  dropout_attention: 0.7
+  dropout_embedding: 0.5
+  dropout_rates: 0.5
+  emb_size: 0
+  hidden_size: 1024
+  initrange: 0.01
+  loss_ratio: 0.05
+  mask_ratio: 0.75
+  max_spike_count: 20
+  n_heads: 2
+  n_layers: 4
+  norm: layer
+  random_ratio: 1.0
+  undivided_attn: false
+  xavier: false
+setup:
+  config_dir: configs/
+  data_dir: data/
+  dataset: mc_rtt_cont_24
+  gpu_idx: -1
+  log_eps: 1.0e-07
+  runs_dir: runs/
+  save_min_bps: -1000.0
+  save_model: true
+  seed: 100
+  subset_seed: 404
+train:
+  add_one_random: false
+  batch_size: 512
+  early_stopping: true
+  epochs: 15000
+  es_chk_pnt: 0.5
+  es_min_bps: 0.0
+  init_lr: 0.01
+  mask_max_span: 6
+  max_grad_norm: 200.0
+  normal_init: true
+  optimizer: AdamW
+  overlap: 45
+  ramp_end: 10000
+  ramp_start: 1000
+  scheduler: Cosine
+  seq_len: 0
+  sweep_enabled: false
+  sweep_epochs: 9999
+  sweep_type: random
+  val_interval: 10
+  val_ratio: 0.05
+  val_type: original
+  warmup_steps: 1500
+  weight_decay: 1.0e-07
+wandb:
+  alt_wandb_dirs: []
+  log: true
+  log_freq: 250
+  log_local: false
+  project: mc_rtt_cont_24_emb
+  silent: 'true'
+  sweep:
+    model:
+      context_backward:
+      - 3
+      - 5
+      - 7
+      - 12
+      - 25
+      - 30
+      context_forward:
+      - 3
+      - 5
+      - 7
+      - 12
+      - 25
+      - 30
+      dropout:
+      - 0.4
+      - 0.5
+      - 0.6
+      - 0.7
+      - 0.8
+      dropout_attention:
+      - 0.4
+      - 0.5
+      - 0.6
+      - 0.7
+      - 0.8
+      dropout_embedding:
+      - 0.4
+      - 0.5
+      - 0.6
+      - 0.7
+      - 0.8
+      dropout_rates:
+      - 0.4
+      - 0.5
+      - 0.6
+      - 0.7
+      - 0.8
+      hidden_size:
+      - 32
+      - 64
+      - 128
+      - 256
+      - 512
+      initrange:
+      - 0.1
+      - 0.01
+      - 0.005
+      - 0.001
+      - 0.0001
+      loss_ratio:
+      - 0.2
+      - 0.25
+      - 0.35
+      - 0.45
+      - 0.55
+      mask_ratio:
+      - 0.65
+      - 0.75
+      - 0.85
+      - 0.9
+      n_heads:
+      - 1
+      - 2
+      - 4
+      n_layers:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      undivided_attn:
+      - true
+      - false
+    setup: {}
+    train:
+      init_lr:
+      - 0.01
+      - 0.001
+      - 0.005
+      - 0.0005
+      - 0.0005
+      - 5.0e-05
+      - 5.0e-06
+      mask_max_span:
+      - 2
+      - 3
+      - 5
+      - 7
+      normal_init:
+      - true
+      - false
+      ramp_end:
+      - 3500
+      - 4000
+      - 5000
+      - 7500
+      - 10000
+      - 15000
+      ramp_start:
+      - 100
+      - 500
+      - 1000
+      - 2000
+      - 3000
+      warmup_steps:
+      - 1
+      - 50
+      - 100
+      - 250
+      - 500
+      - 1000
+      - 2000
+      - 5000
+      - 10000
+      - 50000
+      - 100000
+      - 1000000
+      weight_decay:
+      - 0.01
+      - 0.001
+      - 0.0001
+      - 1.0e-05
+      - 5.0e-05
+      - 1.0e-06
+      - 5.0e-06
+      - 1.0e-07
+      - 1.0e-08
+  sweep_name: my-sweep
