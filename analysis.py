@@ -3,6 +3,7 @@ import sys
 import h5py
 import torch
 import shutil
+import scipy.signal as signal
 import warnings
 import fileinput
 import numpy as np
@@ -30,8 +31,8 @@ warnings.filterwarnings(action='ignore', category=LinAlgWarning, module='sklearn
    ║                       CREATE DATA AND LOAD MODEL                       ║
    ╚════════════════════════════════════════════════════════════════════════╝
 '''
-smth_std = 50 #ms
-lag = 120 #ms
+smth_std = 60 #ms
+lag = 40 #ms
 
 print('Generating data...')
 make_test_data(window=30, overlap=24, lag=lag, smooth_std=smth_std)
@@ -124,12 +125,70 @@ print(f'\n╔══════════════════════�
 with open(f"plots/{name}/test_co_bps.txt", 'w') as f:
     f.write(f'╔═══════════════════════════╗\n║ NDT Test Set Co-bps:      ║\n║   {co_bps:.3f}                   ║\n╚═══════════════════════════╝')
 
+
+# for i in np.linspace(20, 200, 10):
+#     for j in np.linspace(10, 100, 10):
+#         smooth_std = int(j)
+
+
+#         make_test_data(window=30, overlap=24, lag=int(i), smooth_std=int(j))
+#         with h5py.File('/home/dmifsud/Projects/NDT-Timing-Test/data/mc_rtt_cont_24_test.h5', 'r') as h5file:
+#             h5dict = h5_to_dict(h5file)
+
+#         with torch.no_grad():
+#             train_rates = []
+#             test_ho_spikes = []
+#             for spikes, heldout_spikes in zip(
+#                 torch.Tensor(h5dict['test_spikes_heldin']).to(device), torch.Tensor(h5dict['test_spikes_heldout']).to(device)
+#             ):
+#                 ho_spikes = torch.zeros_like(heldout_spikes).to(device)
+#                 spikes_new = torch.cat([spikes, ho_spikes], -1).to(device)
+#                 output = model(spikes_new.unsqueeze(dim=0))[:, -1, :]
+#                 train_rates.append(output.cpu())
+#                 test_ho_spikes.append(heldout_spikes.unsqueeze(dim=0)[:, -1, :].cpu())
+
+#         train_rates = torch.cat(train_rates, dim=0).exp() # turn into tensor and use exponential on rates
+#         test_ho_spikes = torch.cat(test_ho_spikes, dim=0) # turn into tensor and use exponential on rates
+
+        # kern_sd = int(round(smooth_std / dataset.bin_width))
+        # window = signal.gaussian(kern_sd * 6, kern_sd, sym=True)
+        # window /= np.sum(window)
+        # filt = lambda x: np.convolve(x, window, 'same')
+        # smth_train_rates = np.apply_along_axis(filt, 0, train_rates)
+        
+        # gscv = GridSearchCV(Ridge(), {'alpha': np.logspace(-4, 0, 9)})
+        # gscv.fit(smth_train_rates, h5dict['test_vel_segments'])
+        # print(f'╔═══════════════════════════╗\n║ NDT Test Set Decoding (smth:{int(j)}, lag:{int(i)}):    ║\n║   {gscv.best_score_:.3f} R\u00b2                ║\n╚═══════════════════════════╝')
+        # with open(f"plots/{name}/velocity_decoding.txt", 'w') as f:
+        #     f.write(f'╔═══════════════════════════╗\n║ NDT Test Set Decoding (smth:{int(j)}, lag:{int(i)}):    ║\n║   {gscv.best_score_:.3f} R\u00b2                ║\n╚═══════════════════════════╝')
+
+kern_sd = int(round(smth_std / dataset.bin_width))
+window = signal.gaussian(kern_sd * 6, kern_sd, sym=True)
+window /= np.sum(window)
+filt = lambda x: np.convolve(x, window, 'same')
+smth_train_rates = np.apply_along_axis(filt, 0, train_rates)
+    
 gscv = GridSearchCV(Ridge(), {'alpha': np.logspace(-4, 0, 9)})
-gscv.fit(train_rates.numpy(), h5dict['test_vel_segments'])
+gscv.fit(smth_train_rates, h5dict['test_vel_segments'])
 print(f'╔═══════════════════════════╗\n║ NDT Test Set Decoding:    ║\n║   {gscv.best_score_:.3f} R\u00b2                ║\n╚═══════════════════════════╝')
 with open(f"plots/{name}/velocity_decoding.txt", 'w') as f:
     f.write(f'╔═══════════════════════════╗\n║ NDT Test Set Decoding:    ║\n║   {gscv.best_score_:.3f} R\u00b2                ║\n╚═══════════════════════════╝')
 
+# for i in np.linspace(20, 200, 10):
+#     for j in np.linspace(10, 100, 10):
+#         make_test_data(window=30, overlap=24, lag=int(i), smooth_std=int(j))
+#         with h5py.File('/home/dmifsud/Projects/NDT-Timing-Test/data/mc_rtt_cont_24_test.h5', 'r') as h5file:
+#             h5dict = h5_to_dict(h5file)
+
+#         smth_spikes = torch.Tensor(h5dict['test_hi_smth_spikes'])
+#         heldout_smth_spikes = torch.Tensor(h5dict['test_ho_smth_spikes'])
+#         smth_spikes = torch.cat([smth_spikes, heldout_smth_spikes], -1)
+
+#         gscv = GridSearchCV(Ridge(), {'alpha': np.logspace(-4, 0, 9)})
+#         gscv.fit(smth_spikes.numpy(), h5dict['test_vel_segments'])
+#         print(f'\n╔════════════════════════════════════╗\n║ Smoothed Spikes Test Set Decoding (smth:{int(j)}, lag:{int(i)}): ║\n║   {gscv.best_score_:.3f} R\u00b2                         ║\n╚════════════════════════════════════╝\n')
+#         with open(f"plots/{name}/velocity_decoding.txt", 'a') as f:
+#             f.write(f'\n\n╔════════════════════════════════════╗\n║ Smoothed Spikes Test Set Decoding: ║\n║   {gscv.best_score_:.3f} R\u00b2                         ║\n╚════════════════════════════════════╝')
 smth_spikes = torch.Tensor(h5dict['test_hi_smth_spikes'])
 heldout_smth_spikes = torch.Tensor(h5dict['test_ho_smth_spikes'])
 smth_spikes = torch.cat([smth_spikes, heldout_smth_spikes], -1)
@@ -484,6 +543,14 @@ with torch.no_grad():
     )
 rates = np.exp(output)
 
+
+kern_sd = int(round(smth_std / dataset.bin_width))
+window = signal.gaussian(kern_sd * 6, kern_sd, sym=True)
+window /= np.sum(window)
+filt = lambda x: np.convolve(x, window, 'same')
+
+rates = np.apply_along_axis(filt, 0, rates)
+
 gscv = GridSearchCV(Ridge(), {'alpha': np.logspace(-4, 0, 9)})
 gscv.fit(rates, vel)
 print(f'\n╔══════════════════════════════╗\n║ NDT Filered Trials Decoding: ║\n║   {gscv.best_score_:.3f} R\u00b2                   ║\n╚══════════════════════════════╝')
@@ -515,7 +582,7 @@ dataset.data = pd.concat([dataset.data, pca_df], axis=1)
 '''
 print('\nTraining an OLE on Smoothed Spikes...')
 
-rates = dataset.data.spikes_smth_50[~nans.to_numpy() & ~nans.shift(-lag_bins, fill_value=True).to_numpy()].to_numpy()
+rates = dataset.data.spikes_smth_60[~nans.to_numpy() & ~nans.shift(-lag_bins, fill_value=True).to_numpy()].to_numpy()
 
 gscv = GridSearchCV(Ridge(), {'alpha': np.logspace(-4, 0, 9)})
 gscv.fit(rates, vel)
@@ -549,6 +616,7 @@ dataset.data = pd.concat([dataset.data, pca_df], axis=1)
 '''
 print('\nGenerating "true_vs_pred_movement.html"...')
 
+# trial_data = dataset.make_trial_data(align_field='start_time', align_range=(-290, 600), allow_overlap=True, allow_nans=True)
 trial_data = dataset.make_trial_data(align_field='speed_onset', align_range=(-290, 750), allow_nans=True)
 
 fig = go.Figure()
